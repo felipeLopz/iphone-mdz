@@ -602,6 +602,28 @@
   function botonComparar(p) {
     var sr = '<span class="sr-only"> — ' + esc(p.nombre) + '</span>';
 
+    // CÓDIGO MUERTO — esta rama NO se ejecuta nunca. No borrar sin leer esto.
+    //
+    // Requiere esInicio === true, pero para que exista una tarjeta (que es
+    // lo único que llama a botonComparar) hace falta esInicio === false.
+    // Las dos condiciones son mutuamente excluyentes:
+    //   · esInicio = !categoriaPagina && !catalogoCompleto  (línea 896), o
+    //     sea: true SÓLO en index.html.
+    //   · el arranque bifurca en la línea 1332: si esInicio pinta hero,
+    //     carrusel y comparador; si no, recién ahí llama a pintarCatalogo(),
+    //     que es el único camino hasta tarjeta() y tarjetaPrincipal().
+    // Donde hay tarjetas nunca es inicio, y en el inicio no hay tarjetas.
+    //
+    // Consecuencia: el atributo data-comparar no se renderiza en ninguna
+    // página, y el handler de la línea 3675 (closest('[data-comparar]'))
+    // nunca se dispara. Lo que sí se renderiza es el <a> del return de más
+    // abajo, que cruza a index.html con el id en la URL.
+    //
+    // Se deja como está a propósito: es el markup que haría falta el día que
+    // el comparador se monte también en las páginas de catálogo. Si eso
+    // pasa, ojo con dos cosas: esta condición hay que cambiarla por "¿está
+    // montado el comparador en esta página?", y el handler de la 3675
+    // llamaría a cargarEnComparador() donde puede no haber comparador.
     if (esInicio) {
       return '<button class="btn btn--sec btn--comparar" type="button" data-comparar="' + esc(p.id) + '">' +
              btnPartes('lista', 'Comparar', sr) + '</button>';
