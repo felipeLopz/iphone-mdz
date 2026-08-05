@@ -1,0 +1,3975 @@
+/* =====================================================================
+   IPHONE ALLEN — hoja de estilos única
+   Mobile primero. Sin dependencias salvo las fuentes de Fontshare.
+   ===================================================================== */
+
+/* ----------------------------- TOKENS ----------------------------- */
+:root {
+  --fondo:        #F7F8F9;
+  --superficie:   #FFFFFF;
+  --superficie2:  #EFF1F3;
+  --borde:        #DFE3E7;
+  --borde-fuerte: #C5CCD3;
+  /* Paleta monocromática: --acento y --acento-fuerte comparten el mismo
+     negro (#111418) — antes eran dos tonos de jade con roles distintos
+     (texto vs. fondo de botón), ahora ambos casos usan el mismo negro,
+     que pasa de sobra el contraste 4.5:1 en cualquiera de los dos usos. */
+  --acento:       #111418;
+  --acento-fuerte:#111418;
+  --acento-suave: #F0F1F3;
+  /* Sólo para la celda ganadora del comparador: --acento-suave (#F0F1F3)
+     queda casi idéntico al header de tabla (#EFF1F3) y a la fila cebra
+     (#F7F8F9), así que ahí no alcanza como resaltado. Este tono más oscuro
+     se separa de ambos sin competir con el texto #111418 encima. */
+  --comparador-gana: #E2E5E9;
+  --texto:        #1A1F24;
+  --texto-suave:  #5A646E;
+  --texto-tenue:  #8A939C;
+  --rojo-suave:   #C0392B;
+  --error-suave:  #FDEDEA;
+
+  /* chapita "Usado" y encabezado del informe de estado */
+  --usado-fondo:  #FBF1DF;
+  --usado-texto:  #7A5312;
+  --usado-borde:  #E7D0A3;
+
+  /* Semánticas que antes estaban hardcodeadas en los componentes; se
+     movieron acá para que el tema oscuro pueda redefinirlas.
+     --sobre-acento: texto/ícono que va ENCIMA de un fondo --acento-fuerte
+       (botones, pastilla del carrito, botón flotante). Blanco en los dos
+       temas: sobre el jade del tema oscuro también contrasta.
+     --marco-foto: fondo del recuadro de las fotos (ver decisión abajo).
+     --velo: cortina detrás del modal y el drawer.
+     --foco-glow / --error-glow: el halo de 3px del foco de teclado.
+     --borde-acento: borde de chips tintados en color de acento.
+     --pulso-rgb: color (en tripleta RGB) del latido al agregar al carrito. */
+  --sobre-acento:  #FFFFFF;
+  --marco-foto:    #FFFFFF;
+  --velo:          rgba(26, 31, 36, 0.4);
+  --foco-glow:     rgba(17, 20, 24, 0.16);
+  --error-glow:    rgba(192, 57, 43, 0.18);
+  --borde-acento:  rgba(17, 20, 24, 0.35);
+  --pulso-rgb:     17, 20, 24;
+
+  --display: 'Clash Display', 'General Sans', system-ui, sans-serif;
+  --cuerpo:  'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radio:    14px;
+  --radio-sm: 10px;
+  --wrap:     1180px;
+  --gutter:   20px;
+
+  --transicion: 220ms cubic-bezier(.4, .1, .2, 1);
+
+  /* Sombras para separar las superficies elevadas (blanco) del fondo gris:
+     con sólo el borde #DFE3E7 el contraste es demasiado bajo (1.05:1) y
+     los bloques parecen flotar sin apoyo. Tienen que notarse en reposo,
+     no sólo al pasar el mouse. */
+  /* Color de todas las sombras, en tripleta RGB, para poder apagarlo de
+     una en el tema oscuro (donde una sombra sobre fondo oscuro no se ve y
+     la separación la toman los bordes). */
+  --sombra-rgb: 26, 31, 36;
+  --sombra-superficie:       0 2px 4px rgba(var(--sombra-rgb), .10), 0 8px 24px rgba(var(--sombra-rgb), .14);
+  --sombra-superficie-hover: 0 4px 8px rgba(var(--sombra-rgb), .12), 0 12px 32px rgba(var(--sombra-rgb), .18);
+  /* un poco más marcada: refuerza la jerarquía de la tarjeta principal */
+  --sombra-principal:        0 4px 8px rgba(var(--sombra-rgb), .12), 0 16px 40px rgba(var(--sombra-rgb), .18);
+
+  /* Borde para las mismas superficies con sombra: --borde (#DFE3E7) queda
+     demasiado tenue al lado de una sombra este marcada y se ve redundante;
+     este tono un poco más oscuro se distingue sin competir. Sólo se usa en
+     el borde exterior de tarjetas/bloques con sombra — el resto de los
+     divisores (inputs, filas de tabla, chips) se quedan con --borde. */
+  --borde-superficie: #D3D9DF;
+}
+
+/* ------------------------- TEMA OSCURO ----------------------------
+   Sólo redefine variables: ninguna regla de componente se duplica. El
+   atributo lo pone un script inline en el <head> (antes de pintar) y lo
+   cambia el interruptor del header. El claro vive en :root y también se
+   puede forzar con [data-tema="claro"] (que simplemente no hereda nada
+   de acá).
+
+   ACENTO: en claro --acento y --acento-fuerte eran el mismo negro; en
+   oscuro se separan según su rol —igual que el nombre de cada variable
+   ya sugería—: --acento es el jade CLARO para texto/bordes sobre fondo
+   oscuro, --acento-fuerte el jade saturado para FONDOS de botón (con
+   glifo/texto blanco encima, --sobre-acento).
+
+   SOMBRAS: sobre fondo oscuro una sombra no se ve, así que las tres
+   variables de superficie pasan a `none` y la separación la toma el
+   borde (--borde-superficie, más marcado). Los elementos flotantes
+   (modal, drawer, panel del menú, botón de WhatsApp) sí conservan
+   sombra: --sombra-rgb pasa a negro puro, que sobre el fondo oscuro
+   funciona como una sombra real.
+   ------------------------------------------------------------------ */
+[data-tema="oscuro"] {
+  --fondo:        #12161A;
+  --superficie:   #171B21;
+  --superficie2:  #1F252C;
+  --borde:        #232A31;
+  --borde-fuerte: #3A424C;
+  --borde-superficie: #2A313A;
+
+  --acento:       #5DCAA5;   /* texto/bordes de acento */
+  --acento-fuerte:#1D9E75;   /* fondos de botón */
+  --acento-suave: #1A2A26;
+  --comparador-gana: #1F2E2A;
+
+  --texto:        #F0F0F2;
+  --texto-suave:  #9AA3AC;
+  --texto-tenue:  #79838E;
+
+  --rojo-suave:   #E28275;
+  --error-suave:  #2A1B18;
+
+  /* el ámbar se invierte: fondo apagado y texto claro, como el resto de
+     los chips del tema oscuro */
+  --usado-fondo:  #2C2418;
+  --usado-texto:  #E5BE7C;
+  --usado-borde:  #4A3B24;
+
+  /* el marco de las fotos se queda blanco: las fotos vienen con fondo
+     blanco y, si el marco fuese oscuro, se vería un halo blanco de la
+     foto contra el marco. (--sobre-acento también sigue blanco.) */
+  --marco-foto:   #FFFFFF;
+
+  --velo:         rgba(0, 0, 0, 0.6);
+  --foco-glow:    rgba(93, 202, 165, 0.30);
+  --error-glow:   rgba(226, 130, 117, 0.28);
+  --borde-acento: rgba(93, 202, 165, 0.40);
+  --pulso-rgb:    29, 158, 117;
+
+  --sombra-rgb:   0, 0, 0;
+  --sombra-superficie:       none;
+  --sombra-superficie-hover: none;
+  --sombra-principal:        none;
+}
+
+/* Transición del cambio de tema: sólo mientras se conmuta (el JS agrega
+   .cambiando-tema por ~250ms) y sólo sobre color/fondo/borde, nunca
+   `all` —eso haría parpadear transforms y opacidades de toda la página. */
+html.cambiando-tema,
+html.cambiando-tema * {
+  transition: background-color 200ms ease,
+              border-color 200ms ease,
+              color 200ms ease,
+              fill 200ms ease !important;
+}
+
+/* ------------------ APARICIÓN AL SCROLLEAR (SECCIONES) -------------
+   La clase .con-animacion la pone el script inline del <head>, antes del
+   primer pintado: así las secciones ya nacen en opacity 0 y no se ve el
+   parpadeo de contenido visible que se oculta un instante después. Si no
+   hay JS, no hay IntersectionObserver, o el visitante pidió reducir
+   movimiento, esa clase no se agrega y todo se ve directo.
+
+   app.js saca las dos clases al terminar la transición, así que el
+   elemento queda SIN transform y SIN will-change residuales: eso es lo
+   que evita reabrir el bug del scroll trabado sobre las imágenes.
+   ------------------------------------------------------------------ */
+/* El estado oculto lo aplica el CSS por sí solo, sin esperar a app.js:
+   por eso el selector es :not([data-revelado]) y no una clase que
+   agregue el JS. Si lo pusiera el JS (que corre al final del body) la
+   sección se vería un instante antes de ocultarse: ese es el parpadeo. */
+html.con-animacion main > .seccion:not([data-revelado]) {
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+}
+
+/* entrando */
+html.con-animacion main > .seccion[data-revelado="animando"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 350ms ease, transform 350ms cubic-bezier(.4, .1, .2, 1);
+}
+
+/* terminada: sin transform, sin will-change y sin transition colgados */
+html.con-animacion main > .seccion[data-revelado="listo"] {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* ------------------------------ BASE ------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* el header sticky no tapa el destino del scroll */
+  scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fondo plano #F7F8F9 (lo pone `body { background }` arriba).
+   Sobre tema claro, incluso manchas muy tenues tienden a leerse como un
+   tinte sucio en las esquinas, que es justo lo que se quería evitar; el
+   plano es limpio y sin riesgo. Si se prefiere el efecto, basta con volver
+   a poner un body::before con dos radial-gradient muy suaves:
+   rgba(17,20,24,.05) y rgba(17,20,24,.03). */
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* El atributo hidden tiene que ganarle a cualquier display de autor.
+   .modal y .drawer declaran display:flex, y una regla de autor le gana a
+   la del navegador ([hidden] { display: none }) aunque tengan la misma
+   especificidad: sin este !important quedan en pantalla con opacity 0,
+   invisibles pero interceptando clicks y rueda del mouse. */
+[hidden] { display: none !important; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Todos los precios en cifras de ancho fijo */
+.precio, .precio--anterior, .precio--total, [data-precio] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Foco visible en teclado, en todos los controles */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px; top: -60px;
+  z-index: 100;
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);
+  padding: 10px 16px;
+  border-radius: var(--radio-sm);
+  font-weight: 600;
+  transition: top var(--transicion);
+}
+.skip-link:focus { top: 12px; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ----------------------------- BOTONES ----------------------------
+   Tratamiento único para todos los botones de acción: bloque de color
+   con el ícono a la izquierda y el texto sobre fondo oscuro a la
+   derecha, unidos por un solo contorno.
+
+   El markup lo arma btnPartes() en app.js:
+     <button class="btn"><span class="btn__ico">svg</span>
+                         <span class="btn__txt">Texto</span></button>
+   Sigue siendo un <button>/<a> real; el ícono va con aria-hidden y el
+   texto queda accesible.
+
+   OJO: no poner transform en :hover de .btn. Los botones de las
+   tarjetas son descendientes de .card y un transform ahí puede
+   reabrir el bug del scroll trabado sobre .media.
+   ------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  overflow: hidden;
+  background: none;
+  padding: 0;
+  font-family: var(--cuerpo);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  transition: border-color var(--transicion);
+}
+.btn:hover { border-color: var(--acento-fuerte); }
+
+.btn__ico {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 9px 11px;
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);   /* trazo blanco sobre el bloque jade */
+  transition: background var(--transicion);
+}
+.btn__ico .ico { width: 16px; height: 16px; }
+
+.btn__txt {
+  padding: 9px 14px;
+  color: var(--texto);
+  background: var(--superficie);
+  transition: background var(--transicion);
+}
+.btn:hover .btn__txt { background: var(--superficie2); }
+
+/* Variante secundaria: el bloque del ícono va en superficie2 con el
+   trazo en jade, en vez del bloque jade lleno. */
+.btn--sec .btn__ico {
+  background: var(--superficie2);
+  color: var(--acento);
+}
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled:hover { border-color: var(--borde); }
+.btn:disabled:hover .btn__txt { background: var(--superficie); }
+
+/* Área de toque cómoda en todos los botones de acción (WCAG 2.5.8 pide
+   24px como mínimo; 44px es el objetivo recomendado para el pulgar). */
+.btn { min-height: 44px; }
+
+/* A ancho completo el texto ocupa el resto de la fila */
+.btn--bloque { width: 100%; }
+.btn--bloque .btn__txt { flex: 1; }
+
+/* Ajustado a su contenido: el ícono más el texto y nada más. Lo usan las
+   tarjetas (normal, principal, carrusel) y el modal, donde un botón a
+   todo el ancho dejaba una franja vacía a la derecha del texto.
+   align-self sirve en los contenedores flex-columna (.card) y
+   justify-self en los grid (.modal__acciones): se declaran los dos
+   porque el mismo botón vive en ambos. */
+.btn--compacto {
+  width: auto;
+  align-self: start;
+  justify-self: start;
+}
+
+.btn--comparar { width: auto; }
+
+/* ------------------- BOTÓN DE ACCIÓN PRINCIPAL --------------------
+   Un escalón por encima del botón normal, para que en el checkout se
+   note cuál es LA acción de la pantalla. Es un escalón, no el tamaño
+   desmedido de antes: el texto sube de 12 a 14px y los dos bloques
+   ganan 3px arriba y abajo (44px de alto contra los 34 del botón
+   compacto en escritorio). En mobile el botón normal ya mide 44 por el
+   min-height global, así que acá la diferencia la marca la tipografía.
+   Ver htmlCheckout(): lo usa "Finalizar compra". */
+.btn--principal {
+  font-size: 14px;
+  margin-top: 4px;
+}
+.btn--principal .btn__ico { padding: 12px 14px; }
+.btn--principal .btn__txt { padding: 12px 18px; }
+.btn--principal .btn__ico .ico { width: 18px; height: 18px; }
+
+/* Botón sin tratamiento de bloque: acción menor, sólo texto.
+   Hoy lo usa "Vaciar carrito". */
+.btn-plano {
+  color: var(--texto-suave);
+  font-weight: 500;
+  font-size: 0.88rem;
+  padding: 10px;
+  width: 100%;
+  transition: color var(--transicion);
+}
+.btn-plano:hover { color: var(--texto); }
+
+/* ----------------------------- HEADER -----------------------------
+   Cápsula flotante centrada, separada de los bordes de la pantalla.
+   El <header> en sí es transparente y no recibe clicks: sólo la
+   cápsula los recibe, así el hueco de alrededor no tapa el contenido
+   que pasa por debajo al scrollear.
+   ------------------------------------------------------------------ */
+/* El sticky va en #app-header (hijo directo del body), NO en .header:
+   position:sticky se mueve dentro de la caja del PADRE, y como
+   #app-header mide exactamente lo que mide el header, el recorrido era
+   cero y la barra se iba con el scroll. Estaba pensada para quedar fija
+   (de ahí el scroll-padding-top de html), pero nunca lo hacía. */
+#app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.header {
+  padding-block: 14px 8px;
+  pointer-events: none;
+}
+.header > .wrap { pointer-events: none; }
+
+.navbar {
+  position: relative;   /* ancla del panel del desplegable en mobile */
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  box-shadow: var(--sombra-superficie);
+  /* Mobile: bloque de dos filas, así que redondeo parejo de tarjeta.
+     Antes acá iba 99px arriba (píldora) y 22px abajo, que servía cuando
+     la cápsula medía una fila baja. Con las dos filas de 44px la caja
+     pasó a 104px de alto y ese radio dejó de entrar: como 99+22=121
+     supera los 104, el navegador escala los radios y las esquinas de
+     arriba se comían 26px de fondo a cada lado. El resultado era un
+     domo — angosto arriba, ancho abajo — con el logotipo y el carrito
+     pisando fuera del blanco y la curva barriendo entre las dos filas,
+     que es justo lo que se leía como "los links quedaron afuera".
+     El desktop, que sigue siendo una sola fila, mantiene su píldora de
+     99px más abajo, en su propia media query. */
+  border-radius: 22px;
+  padding: 6px 8px 6px 12px;
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  order: 1;
+  flex: 0 0 auto;
+  margin-right: auto;
+}
+
+/* --------------------------- LOGOTIPO ------------------------------
+   Sólo texto en negro, sin recuadro. Mismo tratamiento en el header
+   (.brand) y en el footer (.footer__brand).
+   ------------------------------------------------------------------ */
+/* Marca tipográfica: la categoría en peso liviano y bien espaciada, el
+   lugar en negrita y más ceñido. El contraste de peso es lo que la hace
+   leer como logotipo y no como texto suelto. Ver htmlLogo() en app.js
+   para cambiar de variante (regla / punto / apilado). */
+.logo {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  color: var(--acento);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.logo__cat {
+  font-weight: 400;
+  letter-spacing: 0.2em;
+}
+
+.logo__lugar {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* --- variante 'regla': línea vertical fina entre las dos palabras --- */
+.logo--regla .logo__lugar::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 0.92em;
+  margin-right: 0.42em;
+  background: currentColor;
+  opacity: 0.4;
+  vertical-align: -0.1em;
+}
+
+/* --- variante 'punto' --- */
+.logo--punto .logo__lugar::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  margin-right: 0.5em;
+  background: currentColor;
+  opacity: 0.55;
+  vertical-align: 0.28em;
+}
+
+/* --- variante 'apilado': dos líneas, sin separador --- */
+.logo--apilado {
+  display: grid;
+  justify-items: start;
+  line-height: 1.02;
+}
+.logo--apilado .logo__cat { font-size: 0.74em; }
+
+/* El footer tiene aire de sobra: la marca puede respirar un poco más */
+.logo--grande { font-size: 1.05rem; }
+
+/* separador entre logotipo y links: sólo cuando van en la misma fila */
+.navbar__sep {
+  order: 1;
+  display: none;
+  flex: 0 0 auto;
+  width: 1px;
+  height: 20px;
+  background: var(--borde);
+}
+
+.cart-btn { order: 2; }
+
+/* Interruptor de tema: botón fantasma, a la izquierda de la pastilla del
+   carrito. Mismo order que .cart-btn; queda a su izquierda por orden de
+   fuente (va justo antes en el DOM). */
+.tema-btn {
+  order: 2;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  background: transparent;
+  transition: color var(--transicion), border-color var(--transicion), background var(--transicion);
+}
+.tema-btn:hover { color: var(--texto); border-color: var(--texto-suave); background: var(--superficie2); }
+.tema-btn__ico { display: flex; }
+.tema-btn__ico .ico { width: 19px; height: 19px; }
+
+/* Con sólo tres entradas (Inicio · Productos · Contacto) entran en una
+   fila sin scroll horizontal, así que el nav puede tener overflow visible
+   y dejar que el panel del desplegable se salga. */
+.nav {
+  order: 3;
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  white-space: nowrap;
+  font-size: 0.92rem;
+  color: var(--texto-suave);
+  padding-inline: 4px;
+}
+.nav__link { flex: 0 0 auto; transition: color var(--transicion); }
+.nav__link:hover { color: var(--texto); }
+
+/* --------------------- DESPLEGABLE "PRODUCTOS" -------------------- */
+.nav-drop { position: relative; flex: 0 0 auto; }
+
+/* OJO CON EL ORDEN: estas dos reglas las pisaban, por venir antes en el
+   archivo y con la misma especificidad, `.link-sub { display:inline-block }`
+   y `.ico { width:20px; height:20px }` (los dos ~1800 líneas más abajo).
+   El botón terminaba siendo inline-block —o sea que su align-items no
+   hacía nada— y el chevron medía 20px en vez de 14, apoyado en la línea
+   de base como cualquier elemento inline: eso estiraba la caja de línea
+   del botón y bajaba SU texto 1.2px respecto de "Inicio" y "Contacto".
+   Por eso van calificadas con .nav: así ganan por especificidad y no
+   dependen de quién esté escrito más abajo. */
+.nav .nav-drop__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.nav .nav-drop__chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 200ms ease;
+}
+.nav-drop[data-abierto="true"] .nav-drop__chevron { transform: rotate(180deg); }
+
+.nav-drop__panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 190px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(var(--sombra-rgb), 0.14);
+  padding: 6px;
+  z-index: 50;
+}
+/* puente invisible que cubre el hueco de 10px entre botón y panel, para
+   que el hover no se corte al bajar del botón al panel */
+.nav-drop__panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+
+.nav-drop[data-abierto="true"] > .nav-drop__panel { display: block; }
+
+.nav-drop__grupo { display: block; }
+
+.nav-drop__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-family: var(--cuerpo);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--texto);
+  transition: background 150ms ease, color 150ms ease;
+}
+.nav-drop__item--sub { padding-left: 22px; font-size: 0.86rem; }
+.nav-drop__item:hover,
+.nav-drop__item:focus-visible {
+  outline: none;
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+
+/* Página actual: cada categoría es una página, así que el ítem del menú
+   que corresponde a la que se está viendo queda marcado. En una paleta
+   monocromática el color no alcanza como señal: va también el peso. */
+.nav-drop__item.is-activo {
+  background: var(--acento-suave);
+  font-weight: 600;
+}
+.nav__link.is-activo { color: var(--texto); font-weight: 600; }
+
+/* pastilla jade */
+.cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 99px;
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);  /* ícono y contador en blanco sobre la pastilla */
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background var(--transicion);
+}
+.cart-btn:hover { background: var(--acento-fuerte); filter: brightness(0.92); }
+
+.cart-btn__count {
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  /* burbuja translúcida sobre la pastilla de acento: el blanco al 22%
+     aclara el jade/negro de fondo en cualquiera de los dos temas, así que
+     va literal a propósito (no depende del tema). */
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--sobre-acento);
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: background var(--transicion), color var(--transicion);
+}
+.cart-btn[data-lleno="true"] .cart-btn__count {
+  background: var(--sobre-acento);
+  color: var(--acento-fuerte);
+}
+
+/* ------------------------------ HERO ------------------------------
+   Sin fondo propio ni halo: las manchas jade ahora las pone body::before
+   y tienen que verse a través de toda la sección.
+   ------------------------------------------------------------------ */
+.hero {
+  position: relative;
+  padding-block: 52px 64px;
+  background: none;
+}
+
+.hero__grid {
+  position: relative;
+  display: grid;
+  gap: 44px;
+  align-items: center;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 18px;
+}
+
+.hero__titulo {
+  font-size: clamp(2.5rem, 9vw, 4.4rem);
+  font-weight: 600;
+  max-width: 12ch;
+  /* Corrección óptica: la caja del título ya estaba alineada, pero a este
+     cuerpo la tipografía display deja ~2px de aire a la izquierda del
+     primer trazo, contra ~1px del texto de abajo. Sin esto, el título se
+     ve metido hacia adentro respecto de la bajada y los tildes. Medido:
+     1px de exceso a 73.6px = 0.014em. En em para que escale con el clamp. */
+  margin-left: -0.014em;
+}
+
+.hero__bajada {
+  margin-top: 20px;
+  max-width: 44ch;
+  font-size: 1.05rem;
+  color: var(--texto-suave);
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* Tres garantías con tilde. En una fila si entran; si no, se apilan
+   (cada una es un ítem flex que no se parte por dentro). */
+.datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  margin-top: 42px;
+  padding-top: 26px;
+  border-top: 1px solid var(--borde);
+}
+
+.dato {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.dato__ico {
+  display: flex;
+  flex: 0 0 auto;
+  color: var(--acento);
+}
+/* el tilde solo, sin recuadro: un poco más grueso para que se lea a
+   este tamaño (la regla le gana al stroke-width del atributo) */
+.dato__ico .ico {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5;
+}
+
+.hero__direccion {
+  margin-top: 16px;
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+}
+
+/* tarjeta del producto destacado del hero */
+.hero__producto { min-height: 1px; }
+
+.destacado-card {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 18px;
+  display: grid;
+  gap: 16px;
+}
+
+.destacado-card__cinta {
+  display: inline-flex;
+  align-items: center;
+  align-self: start;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--acento);
+  background: var(--acento-suave);
+  border: 1px solid var(--borde-acento);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.destacado-card__nombre {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.destacado-card__specs {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.destacado-card__fila {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ---------------------- IMAGEN / PLACEHOLDER ----------------------
+   Estructura pensada para que reemplazar el placeholder por una foto
+   sea trivial: dentro de .media, poner
+       <img class="media__img" src="fotos/iphone-15.jpg" alt="iPhone 15">
+   y borrar (o dejar, queda debajo) el div .media__ph.
+   ------------------------------------------------------------------ */
+.media {
+  position: relative;
+  /* Blanco puro: las fotos de producto ya vienen con fondo blanco, así
+     que con object-fit:contain la unión entre foto y marco desaparece
+     en vez de notarse como una franja vacía oscura. En tema oscuro se
+     mantiene blanco (ver --marco-foto): si no, quedaría un halo blanco de
+     la foto contra un marco oscuro. */
+  background: var(--marco-foto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  /* con object-fit:contain (más abajo) la foto puede no llenar el marco;
+     este padding evita que toque el borde y hace que el aire alrededor
+     se vea intencional, no como un recorte fallado. box-sizing:border-box
+     (regla global) hace que el padding no altere el aspect-ratio de acá
+     arriba: el marco mantiene su proporción exacta, quien se ajusta es
+     el espacio interno para la imagen. */
+  padding: 10px;
+  /* explícito a propósito: el recorte de la imagen no debe retener la
+     rueda del mouse ni encadenarla de forma distinta al resto de la
+     página. overscroll-behavior sólo debe existir en .modal__scroll
+     (ahí sí el scroll interno tiene que contenerse). */
+  overscroll-behavior: auto;
+}
+
+.media--alta { aspect-ratio: 1 / 1; }
+
+.media__ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 16px;
+  /* sobre marco blanco: fondo gris claro y texto tenue, coherente con
+     la paleta clara. */
+  background: var(--superficie2);
+  color: var(--texto-tenue);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.media__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* contain, no cover: la foto entra completa, sin recortar los bordes
+     del equipo. Si sobra espacio queda vacío (el padding de .media hace
+     que ese aire se vea a propósito). */
+  object-fit: contain;
+}
+
+/* ---------------------------- PRECIOS ----------------------------- */
+.precio {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.55rem;
+  color: var(--acento);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.precio--anterior {
+  display: block;
+  font-family: var(--cuerpo);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--texto-suave);
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+
+.precio--total {
+  font-size: 1.72rem;
+  color: var(--acento);
+}
+
+/* --------------------------- SECCIONES ---------------------------- */
+.seccion { padding-block: 62px; }
+
+.seccion__head { margin-bottom: 30px; }
+
+.seccion__head--catalogo { margin-top: 46px; }
+
+.seccion__titulo {
+  font-size: clamp(1.65rem, 5vw, 2.3rem);
+}
+
+.seccion__sub {
+  margin-top: 9px;
+  color: var(--texto-suave);
+  font-size: 0.98rem;
+}
+
+/* --------------------------- CARRUSEL ----------------------------- */
+.carrusel {
+  position: relative;
+  max-width: 620px;
+  margin-inline: auto;
+}
+
+.carrusel__viewport {
+  overflow: hidden;
+  border-radius: var(--radio);
+  touch-action: pan-y;
+}
+
+.carrusel__track {
+  display: flex;
+  transition: transform 420ms cubic-bezier(.4, .1, .2, 1);
+  will-change: transform;
+}
+
+.carrusel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 22px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-superficie);
+  display: grid;
+  gap: 18px;
+  /* evita que el gesto de swipe arrastre la imagen/el texto */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.carrusel__slide[aria-hidden="true"] { visibility: hidden; }
+.carrusel__slide .media { aspect-ratio: 16 / 11; }
+
+.carrusel__nombre {
+  font-family: var(--display);
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.carrusel__specs {
+  margin-top: 6px;
+  color: var(--texto-suave);
+  font-size: 0.92rem;
+}
+
+.carrusel__pie {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.carrusel__pie .btn { flex: 1 1 170px; }
+
+/* flechas: sólo desktop */
+.carrusel__flecha {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  font-size: 1.05rem;
+  transition: border-color var(--transicion), color var(--transicion), background var(--transicion);
+}
+.carrusel__flecha:hover:not(:disabled) {
+  border-color: var(--acento-fuerte);
+  color: var(--acento);
+}
+.carrusel__flecha:disabled { opacity: 0.32; cursor: not-allowed; }
+.carrusel__flecha--prev { left: -62px; }
+.carrusel__flecha--next { right: -62px; }
+
+/* barritas de navegación (no puntos) */
+.carrusel__barras {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 24px;
+}
+
+/* [11] activa en jade, inactivas en borde-fuerte, 300ms */
+.barra {
+  width: 42px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--borde-fuerte);
+  border: 0;
+  padding: 0;
+  transition: background 300ms ease, width 300ms ease;
+}
+.barra:hover { background: var(--texto-suave); }
+.barra[aria-selected="true"] {
+  background: var(--acento-fuerte);
+  width: 62px;
+}
+/* área táctil cómoda sin agrandar la barrita visible */
+.barra { position: relative; }
+.barra::after {
+  content: "";
+  position: absolute;
+  inset: -14px -4px;
+}
+
+/* ------------------------ BARRA DE CONFIANZA ---------------------- */
+/* ---------------------------- FILTROS -----------------------------
+   Navegación entre las páginas del catálogo: cada pastilla es un enlace
+   a otra página, no un filtro que repinta la grilla. La activa se marca
+   con aria-current="page".
+   ------------------------------------------------------------------ */
+.filtros {
+  display: flex;
+  gap: 9px;
+  /* Las cinco pastillas no entran en 375px: la fila scrollea en
+     horizontal en vez de apilarse o cortarse. El scroll es sólo
+     horizontal, así que la rueda vertical sigue pasando a la página. */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Una caja con overflow recorta lo que sobresale, y el foco de teclado
+     se dibuja 3px por fuera de la pastilla: sin este aire el anillo de
+     foco queda cortado arriba y abajo. El margen negativo devuelve el
+     espacio para que la fila siga alineada con el resto de la sección.
+     Va sólo en vertical: un margen negativo horizontal empujaría la fila
+     fuera del contenedor y desbordaría la página en mobile. */
+  padding-block: 6px;
+  margin-block: -6px;
+}
+.filtros::-webkit-scrollbar { display: none; }
+
+.filtro {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 9px 17px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color var(--transicion), border-color var(--transicion), background var(--transicion);
+}
+.filtro:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+/* Página actual: negro pleno. Es la señal más fuerte de la fila, y no
+   depende del color (el sitio es monocromático). */
+.filtro[aria-current="page"] {
+  background: var(--acento-fuerte);
+  border-color: var(--acento-fuerte);
+  color: var(--sobre-acento);
+}
+
+/* ------------------- SECCIONES POR CATEGORÍA ----------------------
+   El catálogo se lee como bloques distintos, no como una grilla
+   partida: de ahí el gap grande entre secciones.
+   El encabezado vive en el mismo contenedor que la grilla, así que su
+   borde inferior queda alineado con el ancho de las tarjetas.
+   ------------------------------------------------------------------ */
+.secciones {
+  display: grid;
+  gap: 58px;
+}
+
+.cat__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 13px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.cat__titulo {
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.cat__conteo {
+  color: var(--texto-suave);
+  font-size: 0.86rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------- GRILLA -----------------------------
+   Mobile: una sola columna. El principal va primero en el DOM, así que
+   queda arriba conservando su tamaño mayor.
+   Desde 720px pasa a 1.5fr 1fr 1fr con el principal ocupando dos filas
+   de la primera columna (ver más abajo).
+   ------------------------------------------------------------------ */
+.grilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.card {
+  /* position: relative lo declara la regla del enlace estirado, más abajo */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-superficie);
+  opacity: 0; /* [10] la revela el IntersectionObserver */
+  /* misma duración y curva que el resto de los hovers del sitio */
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+/* [10] entrada escalonada. `backwards` mantiene el estado inicial durante
+   el delay; al terminar, el elemento vuelve a su estilo propio y el
+   transform queda libre para el hover. */
+.card.is-visible {
+  opacity: 1;
+  animation: entrarTarjeta 300ms ease var(--delay, 0ms) backwards;
+}
+
+/* [4] borde que enciende.
+   Ojo: NO agregar transform acá (ni translateY ni scale). .media es hijo
+   directo de .card y tiene overflow:hidden + border-radius (el recorte
+   de la imagen); un transform en :hover sobre este ancestro promueve
+   .card a su propia capa de composición exactamente al entrar el mouse,
+   y esa capa puede "tragarse" la rueda del mouse sobre el área recortada
+   hasta que el cursor sale de la tarjeta (bug real, ya reportado). El
+   cambio de borde no compone capa nueva, así que es seguro. Lo mismo
+   vale para box-shadow: anima el valor de la sombra, nunca la posición
+   ni el tamaño de la caja. */
+.card.is-visible:hover {
+  border-color: var(--acento);
+  box-shadow: var(--sombra-superficie-hover);
+}
+
+/* Escape hatch: si la sonda de app.js detectó que este navegador no
+   avanza animaciones ni dispara el observer, la entrada se apaga y la
+   tarjeta queda visible sin depender del keyframe (que si no avanza se
+   queda en su estado inicial, opacity 0, y la tarjeta no se ve nunca). */
+html[data-anim-entrada="no"] .card {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes entrarTarjeta {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* el nombre es el único foco de la tarjeta y su ::after la cubre entera,
+   así todo el bloque abre el modal con un solo elemento en el tab order.
+
+   OJO: estas tres reglas van juntas y valen para los DOS contenedores que
+   usan .card__abrir (tarjeta de grilla y slide del carrusel):
+     1. el contenedor debe ser position:relative, si no el ::after se
+        ancla al ancestro posicionado más cercano y se desborda;
+     2. el botón de acción necesita position + z-index para quedar
+        por encima del ::after;
+     3. el foco se dibuja sobre el contenedor entero.
+   Si mañana aparece otro contenedor con .card__abrir, hay que sumarlo
+   a los tres selectores. */
+.card__abrir {
+  display: block;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+.card__abrir::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radio);
+}
+
+.card,
+.carrusel__slide { position: relative; }
+
+.card [data-agregar],
+.card [data-avisar],
+.card [data-comparar],
+.card .btn[data-modal],
+.carrusel__slide [data-agregar],
+.carrusel__slide [data-avisar] { position: relative; z-index: 2; }
+
+.card:has(.card__abrir:focus-visible),
+.carrusel__slide:has(.card__abrir:focus-visible) {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+/* [14] sin stock: se atenúa el contenido, no el badge ni el botón */
+.card--agotado .media,
+.card--agotado .card__cat,
+.card--agotado .card__nombre,
+.card--agotado .card__specs,
+.card--agotado .card__precios { opacity: 0.55; }
+
+.badge-stock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  /* chip claro: se lee sobre el marco blanco y sobre el placeholder gris */
+  background: var(--superficie2);
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+/* --------------------- SUGERENCIAS DEL BUSCADOR --------------------
+   Desplegable anclado al .buscador (que es position:relative). Es un
+   atajo al detalle del producto: la grilla se sigue filtrando aparte.
+   ------------------------------------------------------------------ */
+.sugerencias {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 45;              /* sobre el contenido, debajo del velo (50) */
+  width: min(340px, 86vw);
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(var(--sombra-rgb), 0.16);
+}
+
+.sugerencia {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+/* hover y marcado por teclado comparten el mismo resalte */
+.sugerencia:hover,
+.sugerencia.is-activa { background: var(--superficie2); }
+
+.sugerencia__foto {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  background: var(--marco-foto);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+.sugerencia__nombre {
+  font-size: 0.88rem;
+  line-height: 1.25;
+  /* un nombre largo no debe empujar el precio fuera de la fila */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sugerencia__precio {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--acento);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* -------------------- GALERÍA DE FOTOS DEL MODAL -------------------
+   Sólo aparece si el producto tiene fotos extra (img/<id>-2.jpg y
+   siguientes). Con una sola foto el contenedor queda [hidden] y el modal
+   se ve exactamente como antes.
+   ------------------------------------------------------------------ */
+.galeria {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* aire para que el anillo de foco no quede recortado por el overflow */
+  padding-block: 4px;
+}
+.galeria::-webkit-scrollbar { display: none; }
+
+.galeria__mini {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  padding: 3px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--borde-superficie);
+  background: var(--marco-foto);
+  transition: border-color var(--transicion);
+}
+.galeria__mini img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.galeria__mini[aria-selected="true"] {
+  border-color: var(--acento);
+  box-shadow: 0 0 0 1px var(--acento);
+}
+
+/* ---------------------- ETIQUETAS DE PRODUCTO ----------------------
+   Campo "etiqueta" en productos.json ("nuevo" | "oferta"). Van arriba a
+   la IZQUIERDA de la foto, así conviven con el badge "Sin stock" que va
+   arriba a la derecha.
+   Los dos tratamientos son deliberadamente distintos para distinguirlos
+   de un vistazo, y ninguno depende del color (el tema claro es
+   monocromático): "Oferta" es un chip invertido (el más fuerte) y
+   "Nuevo ingreso" es de contorno (más sobrio). Ambos quedan con buen
+   contraste en los dos temas porque se apoyan en --texto/--superficie.
+   ------------------------------------------------------------------ */
+/* Mismo tamaño y forma que .badge-stock, para que los dos se lean como
+   marcas discretas de la foto y ninguna domine sobre la otra. */
+/* Columna de marcas de la esquina superior IZQUIERDA de la foto. Existe
+   porque un usado puede además estar en oferta: las dos chapitas tienen
+   que convivir, y apilarlas con flex evita el top: en píxeles que habría
+   que recalcular cada vez que cambia el alto de una. El badge "Sin stock"
+   sigue solo, del lado derecho, así que nunca se cruzan. */
+.marcas {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+/* Dentro de .marcas las posiciona el flex. Fuera (la chapita "Combo" de
+   la tarjeta y del modal de combo) siguen absolutas como siempre. */
+.marcas .etiqueta {
+  position: static;
+  top: auto;
+  left: auto;
+}
+
+.etiqueta {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* invertido: casi negro sobre claro, casi blanco sobre oscuro */
+.etiqueta--oferta {
+  background: var(--texto);
+  color: var(--superficie);
+}
+
+.etiqueta--nuevo {
+  background: var(--superficie);
+  color: var(--acento);
+  border: 1px solid currentColor;
+}
+
+/* Combo: relleno en acento. Es la más fuerte de las tres porque marca un
+   tipo de producto distinto, no un estado del mismo producto. */
+.etiqueta--combo {
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);
+}
+
+/* Usado: ámbar. No puede ser ni negro (lo usa "Oferta", con la que
+   convive apilada) ni jade (el acento, que en tema oscuro es el color de
+   todo lo bueno), así que se le da una familia propia. Los tres tonos
+   salen de variables porque en oscuro el ámbar claro sobre fondo claro
+   no funciona: ahí se invierte a fondo apagado con texto ámbar. */
+.etiqueta--usado {
+  background: var(--usado-fondo);
+  color: var(--usado-texto);
+  border: 1px solid var(--usado-borde);
+}
+
+/* ======================== TARJETA DE COMBO =========================
+   Banner horizontal de ancho completo, FUERA de .grilla (lo ubica
+   seccionGrilla() en .combo-destacado, antes de la grilla): ya no ocupa
+   la celda grande ni estira las fotos para llenarla. Se ajusta a su
+   contenido — fotos a un lado, texto+precio+acciones al otro — y su
+   altura la da el contenido, no un span de dos filas.
+   ------------------------------------------------------------------ */
+.combo-destacado { margin-bottom: 16px; }   /* mismo aire que el gap de la grilla */
+
+.card--combo {
+  /* mobile-first: apilada (hereda flex-direction:column de .card). La
+     fila sólo entra a partir de 620px — ver la media query más abajo —
+     donde ya hay ancho para las dos fotos + el texto sin apretarse. */
+  gap: 18px;
+  /* mismo tratamiento que la tarjeta principal: sigue siendo el
+     destacado de la sección, aunque ya no ocupe la celda grande */
+  border-color: var(--borde-fuerte);
+  box-shadow: var(--sombra-principal);
+}
+.card--combo.is-visible:hover {
+  box-shadow: 0 6px 12px rgba(var(--sombra-rgb), .14), 0 20px 48px rgba(var(--sombra-rgb), .22);
+}
+
+/* Las dos fotos lado a lado con un "+" en el medio, del mismo tamaño
+   las dos: es un combo, ninguno de los dos manda sobre el otro. En
+   columna (mobile) ocupan el ancho completo de la tarjeta; en fila
+   (620px+, ver la media query) pasan a un ancho fijo de 260px. El
+   aspect-ratio 1/1 nunca se estira: tamaño contenido, como cualquier
+   foto de tarjeta, no una medida que persigue el alto del texto. */
+.combo__fotos {
+  position: relative;      /* ancla de la etiqueta "Combo" */
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.combo__foto { min-width: 0; }
+/* Más específico a propósito (4 clases): la regla general
+   ".card:not(.card--principal) .media { aspect-ratio: 16/10 }" tiene la
+   misma especificidad que un selector de 3 clases (el :not() cuenta el
+   argumento) y aparece después en el archivo, así que sin este empate
+   roto a mano ganaba ella y las fotos del combo salían 16:10 en vez de
+   cuadradas. */
+.card--combo .combo__fotos .combo__foto .media { aspect-ratio: 1 / 1; }
+
+/* Columna del medio: qué es y qué incluye. */
+.combo__info { min-width: 0; }
+
+/* Columna de la derecha: precio, stock y botones. */
+.combo__compra {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* Acá el precio NO se empuja al fondo: la columna se alinea arriba junto
+   a las otras dos y el margin-top:auto de .card__precios dejaría un hueco. */
+.combo__compra .card__precios { margin-top: 0; }
+
+.combo__mas {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--texto-tenue);
+  line-height: 1;
+}
+
+.combo__label {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.combo__incluye {
+  margin-top: 5px;
+  display: grid;
+  gap: 3px;
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+  line-height: 1.35;
+}
+/* viñeta propia: la lista va sin marcador para poder alinearla con el
+   resto del texto de la tarjeta */
+.combo__incluye li { padding-left: 14px; position: relative; }
+.combo__incluye li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--texto-tenue);
+}
+
+.combo__ahorro {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--acento);
+}
+
+/* --- detalle del combo dentro del modal --- */
+.combo__fotos--modal { margin-bottom: 4px; }
+
+.combo-detalle {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+.combo-detalle__item {
+  padding: 12px 14px;
+  background: var(--superficie2);
+  border-radius: var(--radio-sm);
+}
+.combo-detalle__nombre { font-weight: 600; font-size: 0.95rem; }
+.combo-detalle__specs {
+  margin-top: 3px;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+.combo-detalle__precio {
+  margin-top: 5px;
+  font-size: 0.83rem;
+  color: var(--texto-tenue);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__cat {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.card__nombre {
+  font-family: var(--display);
+  font-size: 1.02rem;
+  /* peso normal (no 600): con el precio y el nombre ya en el mismo negro
+     (--acento), la diferencia de peso es lo que marca cuál es el dato
+     principal de la tarjeta [ver .card__precios .precio, más abajo] */
+  font-weight: 400;
+  line-height: 1.25;
+  /* El nombre de la tarjeta era un <h4> y pasó a <h3> para no saltar de
+     h2 a h4 en la jerarquía de la página. El <h4> no estaba alcanzado
+     por la regla `h1, h2, h3` de arriba, así que traía DOS cosas del
+     navegador de las que la tarjeta dependía: 1.33em de margen vertical
+     y letter-spacing normal. Al pasar a h3 esa regla se las llevaba
+     (margin: 0 y letter-spacing: -0.015em) y cambiaba el alto de todas
+     las tarjetas. Se declaran acá para que el cambio sea sólo semántico
+     y no se mueva un píxel. En em, no en px: así siguen escalando con
+     el font-size más chico de escritorio. */
+  margin-block: 1.33em;
+  letter-spacing: normal;
+}
+
+/* Descripción corta debajo del nombre: son las specs del JSON unidas.
+   Llena el aire que quedaba entre el nombre y el precio. */
+.card__specs {
+  margin-top: 6px;
+  font-size: 0.83rem;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+
+/* Los dos botones de la tarjeta, uno al lado del otro y ajustados a su
+   contenido. Si no entran a lo ancho (columnas angostas) se apilan
+   alineados a la izquierda, que es una caída prolija. */
+.card__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ------------------------ CONTADOR DE STOCK ------------------------
+   Una línea fija debajo del precio. Se renderiza SIEMPRE (vacía cuando
+   el producto está agotado, que ya lo dice el badge de la foto) para que
+   todas las tarjetas de la grilla midan exactamente lo mismo tenga el
+   producto stock bajo, normal o cero.
+   ------------------------------------------------------------------ */
+.stock {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  /* alto reservado: 1 línea, esté o no escrita */
+  min-height: 1.3em;
+  line-height: 1.3;
+}
+
+/* Stock bajo: el rojo de alerta que ya usa el sitio para los errores del
+   formulario. Va en negrita porque el color por sí solo no es señal
+   suficiente (daltonismo). Funciona en los dos temas: --rojo-suave está
+   definido en ambos. */
+.stock--bajo {
+  color: var(--rojo-suave);
+  font-weight: 600;
+}
+
+.card__precios { margin-top: auto; padding-top: 4px; }
+.card__precios .precio { font-size: 1.38rem; }
+
+/* ------------- AHORRO CONTRA EL MISMO MODELO NUEVO -----------------
+   La línea se pinta en TODAS las tarjetas, vacía cuando no hay nada que
+   comparar (ver lineaAhorro en app.js), y el alto va reservado acá. Es
+   el mismo criterio que el espaciador del precio tachado: si la línea
+   existiera sólo en los usados, esas tarjetas serían más altas y los
+   botones de la fila dejarían de alinearse.
+   El tono es el de una ventaja, no el de una advertencia: el monto va
+   en el color de acento y el precio del nuevo queda en gris al lado. */
+.card__ahorro {
+  min-height: 1.15rem;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  line-height: 1.15rem;
+  /* --texto-suave y no --texto-tenue: el precio del nuevo es un dato que
+     se lee, no un adorno. Con --texto-tenue quedaba en 3.1 de contraste
+     sobre la tarjeta blanca. */
+  color: var(--texto-suave);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card__ahorro-monto {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+/* ---------------- TARJETAS DE LA GRILLA, TODAS IGUALES -------------
+   Las tarjetas de una fila ya miden lo mismo (son items de grid y se
+   estiran solas). Lo que se desalineaba era el CONTENIDO: un nombre de
+   dos líneas contra uno de una, y un producto con precio anterior
+   tachado contra otro sin descuento. Estas dos reglas fijan ese alto
+   para que precios y botones caigan siempre a la misma altura.
+   La principal queda afuera: tiene su propio tamaño.
+   ------------------------------------------------------------------ */
+
+/* Dos líneas siempre: reserva el alto aunque el nombre entre en una, y
+   recorta con puntos suspensivos si se pasa. 2.5em = 2 líneas de 1.25 */
+.card:not(.card--principal) .card__nombre-txt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.5em;
+}
+
+/* Misma idea para la descripción: dos líneas siempre, recortadas con
+   puntos suspensivos, y esa altura reservada aunque el producto tenga
+   menos specs. Sin el min-height, una tarjeta con specs cortas subía su
+   precio y su botón respecto de la de al lado. 2.9em = 2 × 1.45 */
+.card:not(.card--principal) .card__specs {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.9em;
+}
+
+/* La principal tiene más ancho: le entra una línea más antes de recortar */
+.card--principal .card__specs {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Sin descuento no hay <span class="precio--anterior">, así que el
+   precio actual subía una línea respecto de las tarjetas que sí lo
+   tienen. Este espaciador ocupa esa línea que falta. */
+.card:not(.card--principal) .card__precios:not(:has(.precio--anterior))::before {
+  content: "";
+  display: block;
+  /* mismo alto que .precio--anterior: 0.85rem × line-height 1.6 + 2px
+     de margin-bottom */
+  height: calc(0.85rem * 1.6 + 2px);
+}
+
+/* ------------------------- TARJETA PRINCIPAL -----------------------
+   Un producto por categoría con el doble de espacio. Sobre fondo claro
+   el borde solo no alcanza: se distingue con borde más fuerte + sombra.
+   ------------------------------------------------------------------ */
+.card--principal {
+  border-color: var(--borde-fuerte);
+  box-shadow: var(--sombra-principal);
+}
+/* el hover de .card ya sube la sombra; acá el punto de partida es más
+   marcado, así que el hover sube un escalón más para no perder jerarquía
+   (misma proporción base→hover que --sombra-superficie → -hover) */
+.card--principal.is-visible:hover {
+  box-shadow: 0 6px 12px rgba(var(--sombra-rgb), .14), 0 20px 48px rgba(var(--sombra-rgb), .22);
+}
+.card--principal .card__nombre { font-size: 1.32rem; }
+.card--principal .card__precios .precio { font-size: 1.86rem; }
+
+/* La imagen del principal queda bastante más alta que la de una normal.
+   Va fuera de cualquier media query: en mobile, donde todo se apila en
+   una columna, la diferencia de alto es lo único que distingue al
+   principal, así que ahí también tiene que notarse. */
+.media--principal { aspect-ratio: 4 / 3; }
+.card:not(.card--principal) .media { aspect-ratio: 16 / 10; }
+
+.vacio {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+/* aviso de error al cargar productos.json */
+.aviso {
+  grid-column: 1 / -1;
+  padding: 22px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  color: var(--texto-suave);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+.aviso code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  color: var(--acento);
+  background: var(--superficie2);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+/* ===================== PROMO BANCARIA (placeholder) ===============
+   Mientras es placeholder tiene borde punteado y un tag "Espacio para
+   promo" para que quede obvio que es un hueco a completar, no una promo
+   real. Al poner la promo de verdad se quita la clase promo--placeholder. */
+.promo {
+  border-radius: var(--radio);
+  padding: 26px 22px;
+  text-align: center;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  box-shadow: var(--sombra-superficie);
+}
+.promo--placeholder {
+  border: 2px dashed var(--borde-fuerte);
+  background: var(--superficie2);
+  position: relative;
+}
+.promo__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 12px;
+}
+.promo__titulo {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+/* Las cuotas son el dato principal de la franja: van en el color de
+   texto pleno, no en el gris que usaba el placeholder. */
+.promo__titulo--fuerte {
+  color: var(--texto);
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+/* Fila de medios de pago con tarjeta. Envuelve a dos líneas en celular
+   en vez de desbordar: por eso flex-wrap y el centrado. */
+.promo__tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.promo__tarjeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie2);
+  color: var(--texto);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.promo__tarjeta-ico {
+  width: 18px;
+  height: 18px;
+  color: var(--texto-suave);
+}
+
+/* --texto-suave y no --texto-tenue: dejó de ser una leyenda de relleno,
+   ahora es la aclaración de que las cuotas hay que consultarlas. Con
+   --texto-tenue quedaba en 3.1 de contraste. */
+.promo__sub { margin-top: 6px; color: var(--texto-suave); font-size: 0.9rem; }
+/* con la fila de tarjetas en el medio, la aclaración necesita más aire */
+.promo__tarjetas + .promo__sub { margin-top: 14px; }
+
+/* ---------------------------- CONTACTO ----------------------------
+   Sólo título + dos botones (WhatsApp e Instagram), centrado. Sin
+   formulario, sin dirección: ese contenido ya está en el hero. */
+.contacto { border-top: 1px solid var(--borde); }
+
+/* Alineado a la izquierda como el resto de las secciones: antes estaba
+   centrado y su título quedaba fuera del eje vertical común. */
+.contacto__inner {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+
+.contacto__botones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* ----------------------------- FOOTER ----------------------------- */
+.footer {
+  border-top: 1px solid var(--borde);
+  padding-block: 34px 44px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+.footer__brand { margin-bottom: 9px; }
+.footer__legal { margin-top: 12px; max-width: 62ch; font-size: 0.78rem; opacity: 0.75; }
+
+/* ----------------------------- CARRITO ---------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--velo);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity var(--transicion);
+}
+.overlay[data-visible="true"] { opacity: 1; }
+
+/* La vista del carrito es opaca y ocupa toda la pantalla, así que su velo
+   queda completamente tapado: el blur sería trabajo de GPU tirado. Se deja
+   el elemento (la lógica de apertura/cierre lo usa) pero sin desenfoque. */
+#overlayCarrito { backdrop-filter: none; }
+
+/* ---------------------- CARRITO (PANEL LATERAL) --------------------
+   El carrito del header abre este panel: entra desde la derecha con la
+   lista, el total y "Finalizar compra". Ese botón abre la vista de
+   checkout a pantalla completa (.checkout, más abajo).
+   ------------------------------------------------------------------ */
+.drawer {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(420px, 100%);
+  background: var(--superficie);
+  border-left: 1px solid var(--borde);
+  box-shadow: -12px 0 40px rgba(var(--sombra-rgb), 0.16);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 300ms cubic-bezier(.4, .1, .2, 1);
+}
+.drawer[data-visible="true"] { transform: translateX(0); }
+
+/* -------------------- CHECKOUT (PANTALLA COMPLETA) -----------------
+   Paso 2 y 3 de la compra. Tapa el header del sitio (z-index 61 > 40)
+   para que no haya nada que distraiga mientras se cargan los datos. El
+   contenido se acota con --carrito-ancho y queda centrado; las bandas
+   (encabezado, pasos) van a todo lo ancho.
+   ------------------------------------------------------------------ */
+.checkout {
+  --carrito-ancho: 1060px;
+  --carrito-pad: max(20px, calc((100% - var(--carrito-ancho)) / 2));
+
+  position: fixed;
+  z-index: 61;
+  inset: 0;
+  background: var(--fondo);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 200ms ease, transform 260ms cubic-bezier(.4, .1, .2, 1);
+}
+.checkout[data-visible="true"] { opacity: 1; transform: none; }
+
+/* la única parte que scrollea: el encabezado y los pasos quedan fijos */
+.checkout__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px var(--carrito-pad) 40px;
+}
+
+/* Formulario a la izquierda y resumen al costado. En una sola columna
+   por debajo de 900px (ver la media query). */
+.checkout__grid {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--borde);
+}
+/* en el checkout el encabezado sigue el ancho del contenido */
+.checkout .drawer__head {
+  justify-content: flex-start;
+  gap: 14px;
+  padding-inline: var(--carrito-pad);
+  background: var(--superficie);
+}
+
+.drawer__titulo { font-size: 1.2rem; }
+
+.drawer__cerrar {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  flex: 0 0 auto;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+.drawer__cerrar:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+/* Volver: texto + flecha, alineado a la izquierda del encabezado */
+.drawer__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 8px 12px 8px 6px;
+  margin-left: -6px;
+  border-radius: 999px;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transicion), background var(--transicion);
+}
+.drawer__volver:hover { color: var(--texto); background: var(--superficie2); }
+.drawer__volver .ico { width: 18px; height: 18px; }
+
+.drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 20px;
+}
+
+/* ------------------------- BARRA DE PASOS --------------------------
+   1 · Carrito → 2 · Datos → 3 · WhatsApp. La marca activa la mueve
+   marcarPaso() en app.js. Info secundaria: etiquetas chicas a propósito.
+   ------------------------------------------------------------------ */
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 14px var(--carrito-pad) 0;
+  margin: 0;
+  list-style: none;
+}
+
+.paso { display: grid; gap: 5px; }
+
+.paso__barra {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--borde-fuerte);
+  transition: background 300ms ease;
+}
+
+.paso__label {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  transition: color 300ms ease;
+}
+
+.paso[data-activo="true"] .paso__barra { background: var(--acento-fuerte); }
+.paso[data-activo="true"] .paso__label { color: var(--acento); }
+
+/* --------------------------- LISTA DEL CARRITO ---------------------
+   Scrollea en su propia caja: así el bloque del total queda siempre a
+   la vista sin depender del scroll del drawer. El degradado del borde
+   inferior se enciende sólo cuando hay contenido de sobra.
+   ------------------------------------------------------------------ */
+.carrito-lista { position: relative; }
+
+.carrito-lista::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transicion);
+  background: linear-gradient(to top, var(--superficie), transparent);
+}
+.carrito-lista[data-hay-mas="true"]::after { opacity: 1; }
+
+#carritoItems {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  max-height: calc(100dvh - 340px);
+  overflow-y: auto;
+  /* que el scroll de la lista no se filtre a la página de atrás */
+  overscroll-behavior: contain;
+}
+
+/* ------------------- TARJETA DE PRODUCTO DEL CARRITO --------------- */
+.linea {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  padding: 8px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: 5px;
+  box-shadow: var(--sombra-superficie);
+}
+
+/* la foto del carrito es de 44px de ancho: el padding base (10px por
+   lado) dejaría casi nada de imagen, así que acá va más chico */
+.linea .media { aspect-ratio: 44 / 52; padding: 4px; }
+.linea .media__ph { font-size: 0.58rem; padding: 4px; line-height: 1.15; }
+
+.linea__nombre { font-size: 0.88rem; font-weight: 500; line-height: 1.3; }
+
+.linea__specs {
+  font-size: 0.72rem;
+  color: var(--texto-suave);
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+.linea__precio {
+  font-size: 0.88rem;
+  color: var(--acento);
+  font-variant-numeric: tabular-nums;
+  margin-top: 3px;
+}
+
+.linea__controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.qty {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  color: var(--texto);
+  font-size: 1rem;
+  line-height: 1;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+.qty:hover { border-color: var(--acento-fuerte); color: var(--acento); }
+
+.qty__valor {
+  min-width: 22px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.linea__quitar {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.linea__quitar:hover { color: var(--texto); }
+
+.drawer__foot {
+  border-top: 1px solid var(--borde);
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  display: grid;
+  gap: 6px;
+  background: var(--superficie);
+}
+
+/* bloque anclado: total + acción principal */
+.drawer__anclado {
+  display: grid;
+  gap: 9px;
+  background: var(--fondo);
+  border-top: 1px solid var(--borde-superficie);
+  border-radius: 5px;
+  box-shadow: var(--sombra-superficie);
+  padding: 9px;
+}
+
+.drawer__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: var(--texto-suave);
+  font-size: 0.92rem;
+}
+
+/* El botón del bloque anclado se ajusta a su contenido y se alinea con
+   el precio, a la derecha: a todo el ancho del panel dominaba la vista. */
+.drawer__anclado .btn { justify-self: end; }
+
+/* ==================== BLOQUES DE LA VISTA DE CHECKOUT ==============
+   Resumen del pedido (sólo lectura), cuentas + medios de pago, y los
+   productos sugeridos. Existen para que la pantalla completa no quede
+   vacía cuando el pedido tiene uno o dos productos.
+   ================================================================== */
+.resumen__titulo {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.resumen-pedido { margin-bottom: 26px; }
+
+/* Línea del pedido: foto, nombre + cantidad, y el subtotal a la derecha.
+   Sin controles de cantidad — para editar se vuelve al carrito. */
+.pedido-linea {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borde);
+}
+.pedido-linea:last-child { border-bottom: 0; }
+.pedido-linea .media { aspect-ratio: 1 / 1; padding: 4px; }
+.pedido-linea__nombre { font-size: 0.9rem; font-weight: 500; line-height: 1.3; }
+.pedido-linea__cant {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+.pedido-linea__sub {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout__resumen {
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-superficie);
+  padding: 18px;
+  /* en escritorio acompaña el scroll del formulario, que es largo */
+  position: sticky;
+  top: 0;
+}
+
+.resumen__cuentas { margin: 0 0 16px; }
+.resumen__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 0.9rem;
+}
+.resumen__fila dt { color: var(--texto-suave); }
+.resumen__fila dd { margin: 0; font-variant-numeric: tabular-nums; }
+.resumen__suave { color: var(--texto-tenue); font-size: 0.85rem; text-align: right; }
+
+.resumen__fila--total {
+  border-top: 1px solid var(--borde);
+  margin-top: 6px;
+  padding-top: 12px;
+}
+.resumen__fila--total dt { color: var(--texto); font-weight: 500; }
+.resumen__fila--total .precio--total { font-size: 1.35rem; }
+
+.resumen__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  margin-bottom: 8px;
+}
+
+.resumen__pagos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.resumen__pago {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+.resumen__pago .ico { width: 15px; height: 15px; }
+
+.resumen__nota {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding-top: 14px;
+  border-top: 1px solid var(--borde);
+  font-size: 0.83rem;
+  color: var(--texto-suave);
+  line-height: 1.4;
+}
+.resumen__nota .ico {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  stroke-width: 2.5;
+  color: var(--acento);
+}
+
+/* ------------------------- SUGERIDOS ------------------------------ */
+.sugeridos {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--borde);
+}
+
+.sugeridos__fila {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.sugerido {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+}
+.sugerido .media { aspect-ratio: 4 / 3; }
+.sugerido__nombre {
+  font-size: 0.86rem;
+  line-height: 1.3;
+  /* dos líneas fijas: mantiene los precios y los botones alineados */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+.sugerido__precio {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--acento);
+  margin-top: auto;
+}
+
+/* ---------------------- BOTÓN VOLVER ARRIBA -----------------------
+   Único flotante del sitio (el de WhatsApp se quitó: el contacto vive
+   en el hero, en Contacto y en las preguntas). z-index 30, por debajo
+   del header (40), del velo (50), del carrito (60) y del modal (65), y
+   app.js lo oculta del todo mientras haya una capa abierta.
+   Va en superficie y no en acento a propósito: es una ayuda de
+   navegación, no una llamada a la acción.
+   ------------------------------------------------------------------ */
+.arriba-btn {
+  position: fixed;
+  z-index: 30;
+  right: 20px;
+  bottom: 20px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto-suave);
+  border: 1px solid var(--borde-superficie);
+  box-shadow: 0 2px 6px rgba(var(--sombra-rgb), .14), 0 8px 22px rgba(var(--sombra-rgb), .18);
+  /* oculto hasta que se scrollea: visibility (no display) para que la
+     opacidad pueda animar; pointer-events evita que capture toques
+     mientras está invisible */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease,
+              color var(--transicion), border-color var(--transicion);
+}
+.arriba-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.arriba-btn .ico { width: 20px; height: 20px; }
+.arriba-btn:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+/* --------------------- [25] CONFIRMACIÓN (TOAST) ------------------ */
+.toast {
+  position: fixed;
+  z-index: 70;
+  left: 50%;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--superficie2);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  padding: 11px 18px 11px 14px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0) scale(0.86);
+  transition: opacity 180ms ease;
+}
+.toast .ico { color: var(--acento); }
+
+.toast[data-visible="true"] {
+  opacity: 1;
+  animation: aparecerToast 340ms cubic-bezier(.34, 1.4, .64, 1) forwards;
+}
+
+@keyframes aparecerToast {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(0.86); }
+  60%  { opacity: 1; transform: translate(-50%, 0) scale(1.08); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* =====================================================================
+   ICONOS
+   SVG estilo Tabler embebidos en el markup (ti-shopping-cart, ti-check,
+   ti-search-off…). Van inline para no sumar dependencias externas.
+   ===================================================================== */
+.ico {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  stroke: currentColor;
+}
+.ico--grande { width: 34px; height: 34px; }
+
+/* ------------------- [19] SUBRAYADO QUE CORRE --------------------- */
+.link-sub {
+  position: relative;
+  display: inline-block;
+}
+.link-sub::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 350ms cubic-bezier(.4, .1, .2, 1);
+}
+.link-sub:hover::after,
+.link-sub:focus-visible::after { transform: scaleX(1); }
+
+/* --------------------- [7] PULSO DEL CTA DEL HERO ------------------
+   Único botón con halo. Se pausa mientras la confirmación [25] está en
+   pantalla para que los dos efectos no compitan.
+   ------------------------------------------------------------------ */
+.btn--pulso { animation: pulso 2.6s ease-out infinite; }
+
+body[data-confirmando="true"] .btn--pulso { animation-play-state: paused; }
+
+@keyframes pulso {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--pulso-rgb), 0.4); }
+  70%  { box-shadow: 0 0 0 9px rgba(var(--pulso-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--pulso-rgb), 0); }
+}
+
+/* ------------------- BARRA DEL CATÁLOGO + BUSCADOR ----------------- */
+.barra-catalogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+/* min-width:0 es lo que deja que la fila se achique por debajo del ancho
+   de sus pastillas; sin eso el flex item no encoge y el scroll interno
+   de .filtros nunca llega a activarse (desborda la página en su lugar). */
+.barra-catalogo .filtros { flex: 1 1 auto; min-width: 0; }
+
+/* --------------------- HERRAMIENTAS DEL CATÁLOGO -------------------
+   Rango de precio + orden + buscador. En escritorio van a la derecha de
+   las pastillas de categoría; en mobile bajan a su propia fila (ver la
+   media query del final) para no apretar los tres controles.
+   ------------------------------------------------------------------ */
+.herramientas {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+/* Los dos campos de precio con el guión en medio, como un solo control */
+.rango {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 8px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  height: 38px;
+}
+.rango__campo {
+  width: 74px;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0;
+}
+.rango__campo::placeholder { color: var(--texto-tenue); }
+/* el foco se marca en el campo, no en la cápsula: así se ve cuál de los
+   dos está activo */
+.rango__campo:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; border-radius: 4px; }
+.rango__campo[aria-invalid="true"] { color: var(--rojo-suave); }
+.rango__sep { color: var(--texto-tenue); flex: 0 0 auto; }
+
+.rango__limpiar {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--texto-suave);
+  transition: color var(--transicion), background var(--transicion);
+}
+.rango__limpiar:hover { color: var(--texto); background: var(--superficie2); }
+.rango__limpiar .ico { width: 14px; height: 14px; }
+
+.rango__error {
+  margin: -18px 0 22px;
+  color: var(--rojo-suave);
+  font-size: 0.85rem;
+}
+
+/* --------------------- FILTRO NUEVO / USADO ------------------------
+   Tres pastillas dentro de una cápsula, del mismo alto (38px) que el
+   resto de los controles de la barra. Son radios de verdad: el <input>
+   está oculto y la pastilla visible es su <label>, así se conserva la
+   navegación con flechas y el anuncio del lector de pantalla.
+   El <fieldset> va sin borde ni padding propios: los estilos de cápsula
+   son de este contenedor, no de un div extra. */
+.condicion {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 38px;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  min-width: 0;
+}
+/* fuera de pantalla pero enfocable: sin esto el foco de teclado no
+   llega nunca a las pastillas */
+.condicion__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.condicion__op {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--transicion), background var(--transicion);
+}
+.condicion__op:hover { color: var(--texto); }
+.condicion__radio:checked + .condicion__op {
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);
+  font-weight: 600;
+}
+/* el foco se dibuja sobre la pastilla, que es lo que se ve */
+.condicion__radio:focus-visible + .condicion__op {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.orden__select {
+  height: 38px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+.orden__select:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+.buscador {
+  position: relative;   /* ancla del desplegable de sugerencias */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.buscador__lupa {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  color: var(--texto-suave);
+  transition: color var(--transicion), border-color var(--transicion);
+}
+.buscador__lupa:hover { color: var(--texto); border-color: var(--texto-suave); }
+.buscador[data-abierto="true"] .buscador__lupa { color: var(--acento); border-color: var(--acento-fuerte); }
+
+/* [32] el campo crece desde la lupa. Animar width es la excepción
+   aceptada: no hay forma limpia de hacerlo con transform. */
+.buscador__campo {
+  width: 0;
+  padding: 9px 0;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: 0.88rem;
+  opacity: 0;
+  transition: width 400ms cubic-bezier(.4, .1, .2, 1),
+              padding 400ms cubic-bezier(.4, .1, .2, 1),
+              opacity 260ms ease,
+              border-color 200ms ease,
+              box-shadow 200ms ease;
+}
+.buscador[data-abierto="true"] .buscador__campo {
+  width: 132px;
+  padding-inline: 14px;
+  opacity: 1;
+}
+
+/* [35] campo con foco: borde en acento, también por teclado */
+.buscador__campo:focus-visible {
+  outline: none;
+  border-color: var(--acento-fuerte);
+  box-shadow: 0 0 0 3px var(--foco-glow);
+}
+.buscador__campo::-webkit-search-cancel-button { filter: grayscale(1); }
+
+/* --------------------- [9] ESQUELETOS DE CARGA -------------------- */
+.skel-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.skel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.skel {
+  border-radius: var(--radio-sm);
+  background: linear-gradient(90deg, var(--superficie2) 25%, var(--borde) 50%, var(--superficie2) 75%);
+  background-size: 200% 100%;
+  animation: brillo 1.5s linear infinite;
+}
+.skel--media  { aspect-ratio: 4 / 3; }
+.skel--linea  { height: 12px; }
+.skel--corta  { height: 12px; width: 55%; }
+.skel--precio { height: 20px; width: 42%; }
+.skel--boton  { height: 38px; border-radius: var(--radio-sm); }
+
+@keyframes brillo {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* ------------------ [16] ENTRADA AL CAMBIAR FILTRO ---------------- */
+.cat--entra { animation: entrarSeccion 200ms ease backwards; }
+
+@keyframes entrarSeccion {
+  from { opacity: 0; transform: translateX(9px); }
+}
+
+/* -------------------- [13] SIN RESULTADOS ------------------------- */
+.estado-vacio {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 58px 20px;
+  animation: aparecer 250ms ease backwards;
+}
+.estado-vacio .ico { color: var(--borde-fuerte); }
+.estado-vacio__titulo {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.estado-vacio__texto { color: var(--texto-suave); font-size: 0.92rem; }
+
+.enlace {
+  color: var(--acento);
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+@keyframes aparecer { from { opacity: 0; } }
+
+/* ------------------- [31] CARRITO VACÍO ---------------------------
+   Centrado en el drawer: ícono en tono suave, qué pasa, qué hacer, y el
+   botón que lleva al catálogo. El ícono va en un círculo tenue para que
+   se lea como ilustración y no como un botón más. */
+.carrito-vacio {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--texto-suave);
+  animation: aparecer 250ms ease backwards;
+}
+.carrito-vacio__ico {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 6px;
+  border-radius: 999px;
+  background: var(--superficie2);
+  color: var(--texto-tenue);
+}
+.carrito-vacio__ico .ico {
+  width: 30px;
+  height: 30px;
+  animation: latido 3.2s ease-in-out infinite;
+}
+.carrito-vacio__titulo {
+  font-family: var(--display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--texto);
+}
+.carrito-vacio__texto {
+  font-size: 0.92rem;
+  max-width: 30ch;
+}
+/* el botón no tiene por qué estirarse al ancho del drawer */
+.carrito-vacio .btn {
+  margin-top: 10px;
+  width: auto;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.14); }
+}
+
+/* ------------- [8] SALTO DEL ÍCONO DEL CARRITO -------------------- */
+.cart-btn__ico { width: 18px; height: 18px; }
+.cart-btn__ico.is-saltando { animation: salto 550ms cubic-bezier(.34, 1.4, .64, 1); }
+
+@keyframes salto {
+  0%, 100% { transform: translateY(0); }
+  40%      { transform: translateY(-3px); }
+  70%      { transform: translateY(1px); }
+}
+
+/* ------------ [27] [28] LÍNEAS DEL CARRITO ------------------------
+   El wrapper colapsa con grid-template-rows 1fr → 0fr: así las líneas
+   de abajo suben acompañando la transición en vez de saltar.
+   ------------------------------------------------------------------ */
+.linea-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 400ms cubic-bezier(.4, .1, .2, 1),
+              opacity 400ms ease;
+}
+/* min-height:0 (no overflow:hidden): un grid item mide "auto" como
+   mínimo por defecto y no deja que la fila 1fr→0fr lo colapse del todo;
+   min-height:0 saca ese piso sin recortar nada. overflow:hidden lograba
+   lo mismo, pero también recortaría el box-shadow de .linea. */
+.linea-wrap > .linea { min-height: 0; }
+
+.linea-wrap--sale {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.linea-wrap--sale > .linea {
+  transform: translateX(70px);
+  transition: transform 400ms cubic-bezier(.4, .1, .2, 1);
+}
+
+.linea-wrap--entra > .linea { animation: entrarLinea 350ms ease backwards; }
+
+@keyframes entrarLinea {
+  from { opacity: 0; transform: translateX(-26px); }
+}
+
+/* --------------- [36] TILDE QUE SE DIBUJA ------------------------- */
+.enviado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--acento);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding-bottom: 4px;
+}
+.enviado__tilde {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+}
+.enviado__tilde path {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: trazar 520ms cubic-bezier(.4, .1, .2, 1) forwards;
+}
+
+@keyframes trazar { to { stroke-dashoffset: 0; } }
+
+/* =====================================================================
+   FORMULARIO DE ENTREGA (paso 2 del carrito)
+   Vive dentro de .drawer__body, hermano de #carritoItems. Nunca se
+   destruye/reconstruye: sólo se alterna [hidden], así los valores
+   cargados no se pierden al volver al carrito.
+   ===================================================================== */
+.form-entrega {
+  display: grid;
+  gap: 18px;
+}
+
+.form-entrega__titulo {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: -6px;
+}
+.form-entrega__titulo:focus-visible { outline: none; } /* foco programático, no de teclado */
+
+.form-entrega__bajada { color: var(--texto-suave); font-size: 0.9rem; margin-top: -10px; }
+
+/* ------------------------------ CAMPOS ----------------------------- */
+.campo {
+  display: grid;
+  gap: 7px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.campo__label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0;
+}
+
+.req { color: var(--rojo-suave); }
+
+.campo__opcional {
+  color: var(--texto-suave);
+  font-weight: 400;
+  font-size: 0.82rem;
+}
+
+.campo__error {
+  color: var(--rojo-suave);
+  font-size: 0.82rem;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  /* 16px fijo: por debajo de esto, iOS hace zoom automático al enfocar */
+  font-size: 16px;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+.input::placeholder { color: var(--texto-suave); }
+.input:focus-visible {
+  outline: none;
+  border-color: var(--acento-fuerte);
+  box-shadow: 0 0 0 3px var(--foco-glow);
+}
+.input[aria-invalid="true"] { border-color: var(--rojo-suave); background: var(--error-suave); }
+.input[aria-invalid="true"]:focus-visible { box-shadow: 0 0 0 3px var(--error-glow); }
+
+/* --------------------- OPCIONES TIPO BOTÓN (radio) ------------------
+   input real, oculto visualmente pero enfocable (nada de display:none,
+   eso lo sacaría del tab order). Las flechas del teclado entre opciones
+   son gratis: es el comportamiento nativo de un grupo de radios con el
+   mismo name.
+   ------------------------------------------------------------------ */
+.opciones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--superficie);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+}
+.opcion input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+.opcion:has(input:checked) {
+  border-color: var(--acento-fuerte);
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+.opcion:has(input:focus-visible) {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+.opciones[data-invalid="true"] .opcion { border-color: var(--rojo-suave); }
+
+.opciones--horarios {
+  grid-template-columns: repeat(2, 1fr);
+}
+.opciones--horarios .opcion { font-size: 0.8rem; padding-inline: 6px; }
+
+.form-entrega__nota,
+.form-entrega__privacidad {
+  color: var(--texto-suave);
+  font-size: 0.82rem;
+  text-align: center;
+  margin-top: -6px;
+}
+
+/* wrap más angosto para bloques de lectura (FAQ) */
+
+/* =====================================================================
+   COMPARADOR DE EQUIPOS
+   ===================================================================== */
+.comparador__selects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.comparador__campo { flex: 1 1 220px; min-width: 0; }
+
+/* ================== SELECTOR PERSONALIZADO (csel) ==================
+   Reemplaza al <select> nativo del comparador. El botón es el combobox
+   y el panel el listbox; los estados los maneja crearSelector() en
+   app.js. Ver ahí la parte de teclado y ARIA.
+   ================================================================== */
+.csel { position: relative; }
+
+.csel__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  /* mismo tratamiento que tenía .select para no romper la fila */
+  padding: 11px 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: 0.92rem;
+  text-align: left;
+  /* área de toque cómoda en celular */
+  min-height: 44px;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+.csel__btn:hover { border-color: var(--texto-suave); }
+.csel__btn[aria-expanded="true"] { border-color: var(--acento-fuerte); }
+
+/* Sin elegir, el texto es un placeholder: más tenue que un valor real */
+.csel[data-vacio="true"] .csel__valor { color: var(--texto-tenue); }
+
+.csel__valor {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.csel__chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--texto-suave);
+  transition: transform var(--transicion);
+}
+.csel__btn[aria-expanded="true"] .csel__chevron { transform: rotate(180deg); }
+
+.csel__panel {
+  position: absolute;
+  z-index: 45;          /* sobre el contenido, debajo del velo (50) */
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  /* si la lista es larga, scrollea adentro en vez de desbordar */
+  max-height: min(320px, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(var(--sombra-rgb), 0.16);
+}
+
+.csel__grupo {
+  padding: 8px 10px 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.csel__op {
+  padding: 10px 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  cursor: pointer;
+  /* alto cómodo para el dedo */
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* El resaltado del teclado y el del mouse son el mismo: una sola señal
+   visual para "acá vas a elegir". */
+.csel__op.is-resaltada { background: var(--superficie2); }
+
+.csel__op[aria-selected="true"] {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+/* Deshabilitada = ya elegida en la otra columna. No se puede elegir ni
+   con el mouse ni con las flechas (lo filtra crearSelector). */
+.csel__op[aria-disabled="true"] {
+  color: var(--texto-tenue);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.csel__op[aria-disabled="true"].is-resaltada { background: transparent; }
+
+@media (max-width: 559px) {
+  /* en celular las opciones se agrandan para el dedo */
+  .csel__op { min-height: 46px; font-size: 0.95rem; }
+}
+
+.comparador__vs {
+  flex: 0 0 auto;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.comparador__vacio {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+/* La sombra va en el contenedor de afuera (#comparadorTabla), no en
+   .comparador__scroll: éste tiene overflow-x:auto para el scroll
+   horizontal de seguridad, y cualquier overflow distinto de "visible"
+   recorta el box-shadow del propio elemento. El :has() la limita a
+   cuando hay tabla (no en el estado vacío, que no tiene esta forma). */
+#comparadorTabla:has(.comparador__scroll) {
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-superficie);
+}
+
+.comparador__scroll {
+  overflow-x: auto;    /* red de seguridad si algún nombre muy largo no entra */
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+}
+
+.comparador__tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparador__tabla th,
+.comparador__tabla td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--borde);
+  vertical-align: top;
+}
+.comparador__tabla tbody tr:last-child th,
+.comparador__tabla tbody tr:last-child td { border-bottom: 0; }
+
+.comparador__tabla { background: var(--superficie); }
+.comparador__tabla thead th {
+  background: var(--superficie2);
+  border-bottom: 1px solid var(--borde);
+}
+
+/* Filas alternas para facilitar la lectura: la zebra va en la <tr> (no en
+   las celdas), así la celda ganadora puede pintar su propio fondo opaco
+   por encima sin pelear especificidad con nth-child. */
+.comparador__tabla tbody tr:nth-child(even) { background: var(--fondo); }
+
+/* Celda ganadora: pinta su propio fondo opaco (gana a la zebra). El color
+   no es la única señal: comparadorCeldaValor() agrega "(mejor valor)" en
+   texto sólo para lectores de pantalla. */
+.comparador__tabla td.comparador__gana {
+  background: var(--comparador-gana);
+  color: var(--acento);
+  font-weight: 600;
+}
+
+.comparador__tabla tbody th[scope="row"] {
+  color: var(--texto-suave);
+  font-weight: 500;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.comparador__tabla tbody td { font-size: 0.92rem; }
+
+.comparador__prod {
+  display: grid;
+  gap: 10px;
+  min-width: 160px;
+}
+.comparador__prod .media { aspect-ratio: 4 / 3; }
+.comparador__nombre {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 600;
+  /* Dos líneas SIEMPRE: un nombre largo envuelve y el otro no, y esa
+     diferencia de una línea corría hacia abajo el precio y todas las
+     filas de esa columna. Con el alto reservado, las dos columnas
+     arrancan cada fila a la misma altura. */
+  min-height: 2.6em;
+}
+.comparador__prod .card__precios { margin-top: 0; }
+
+/* Un producto en oferta trae la línea del precio anterior tachado y el
+   otro no, así que su columna quedaba más alta y las filas de las dos
+   columnas dejaban de estar alineadas. Este espaciador ocupa esa línea
+   que falta cuando no hay descuento, con el mismo alto exacto.
+   (Mismo recurso que ya usan las tarjetas de la grilla.) */
+.comparador__prod .card__precios:not(:has(.precio--anterior))::before {
+  content: "";
+  display: block;
+  /* alto de .precio--anterior: 0.85rem × line-height 1.6 + 2px de margen */
+  height: calc(0.85rem * 1.6 + 2px);
+}
+
+.comparador__tabla tfoot td {
+  border-bottom: 0;
+  background: var(--superficie);
+}
+
+/* La tabla de 2 columnas no entra en 375px: por debajo de 560px se
+   apila. El <table> sigue siendo el mismo elemento semántico (mismo
+   DOM, mismo th scope="row"/"col"); sólo cambia cómo se dibuja.
+   La fila de imagen/nombre/precio queda en 2 columnas (cabe igual,
+   son pocos datos); lo que se apila es cada especificación: la clave
+   arriba y, debajo, los dos valores identificados con el nombre del
+   equipo en texto suave (vía data-label + ::before). */
+@media (max-width: 559px) {
+  .comparador__tabla thead tr {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .comparador__tabla thead th:first-child { display: none; } /* celda vacía, sr-only */
+  .comparador__tabla thead th { flex: 1 1 0; padding: 12px 8px; }
+  .comparador__prod { min-width: 0; }
+  .comparador__prod .media__ph { font-size: 0.68rem; padding: 6px; }
+
+  .comparador__tabla tbody tr {
+    display: block;
+    padding: 14px 4px;
+  }
+  .comparador__tabla tbody th,
+  .comparador__tabla tbody td {
+    display: block;
+    padding: 3px 4px;
+    border-bottom: 0;
+  }
+  .comparador__tabla tbody th[scope="row"] {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-top: 6px;
+  }
+  .comparador__tabla tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.76rem;
+    color: var(--texto-suave);
+    margin-top: 6px;
+  }
+
+  .comparador__tabla tfoot tr { display: flex; gap: 10px; padding: 12px 4px; }
+  .comparador__tabla tfoot td:first-child { display: none; }
+  .comparador__tabla tfoot td { flex: 1 1 0; padding: 0; border-bottom: 0; }
+}
+
+/* =====================================================================
+   FORMAS DE PAGO
+   ===================================================================== */
+.pagos-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Ícono en bloque jade a la izquierda, nombre a la derecha. Sin borde:
+   la tarjeta se apoya sólo en su fondo blanco sobre el gris de la página. */
+.pago-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: var(--superficie);
+  border: 0;
+  border-radius: 5px;
+  box-shadow: var(--sombra-superficie);
+}
+
+.pago-card__ico {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);  /* trazo blanco sobre el bloque jade */
+}
+.pago-card__ico .ico { width: 19px; height: 19px; }
+
+.pago-card__titulo { font-weight: 600; }
+.pago-card__detalle { margin-top: 6px; color: var(--texto-suave); font-size: 0.9rem; }
+
+/* =====================================================================
+   PREGUNTAS FRECUENTES — acordeón con <details>/<summary> nativos
+   ===================================================================== */
+/* Los ítems de por sí no tienen fondo propio (sólo divisores entre
+   filas), así que el acordeón entero se trata como UN bloque elevado,
+   no cada pregunta por separado — eso sí se vería mal, superficies
+   elevadas solapadas fila por fila. */
+.acordeon {
+  display: grid;
+  background: var(--superficie);
+  border: 1px solid var(--borde-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-superficie);
+  padding: 0 20px;
+  /* Medida de lectura acotada, pero SIN centrar: la sección usa el mismo
+     .wrap que las demás para que el título arranque en el mismo eje, y el
+     acordeón se limita a 760px desde la izquierda. Antes la sección usaba
+     un .wrap--angosto centrado, que empujaba el título 210px adentro. */
+  max-width: 760px;
+}
+
+/* La abierta se marca con una barra vertical jade sobre el borde
+   izquierdo. El borde de 2px existe siempre (transparente) para que al
+   abrir no se corra el texto. */
+.faq__item {
+  border-bottom: 1px solid var(--borde);
+  border-left: 2px solid transparent;
+  padding-left: 12px;
+  transition: border-left-color 300ms ease;
+}
+.faq__item:last-child { border-bottom: 0; }
+.faq__item[open] { border-left-color: var(--acento-fuerte); background: var(--fondo); }
+
+.faq__pregunta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 4px;
+  cursor: pointer;
+  font-weight: 500;
+  list-style: none;             /* quita el triángulo por defecto */
+}
+.faq__pregunta::-webkit-details-marker { display: none; }
+.faq__pregunta:hover { color: var(--acento); }
+.faq__item[open] .faq__pregunta { color: var(--acento); }
+
+.faq__chevron {
+  flex: 0 0 auto;
+  color: var(--texto-suave);
+  transition: transform 300ms ease;
+}
+.faq__item[open] .faq__chevron { transform: rotate(180deg); }
+
+.faq__respuesta { padding: 0 4px 18px; color: var(--texto-suave); font-size: 0.93rem; }
+
+.faq__mas {
+  margin-top: 26px;
+  max-width: 760px;   /* misma medida que el acordeón, mismo eje izquierdo */
+  color: var(--texto-suave);
+  font-size: 0.92rem;
+}
+
+/* =====================================================================
+   MODAL DE PRODUCTO
+   ===================================================================== */
+.modal {
+  position: fixed;
+  z-index: 65;
+  left: 50%;
+  top: 50%;
+  width: min(620px, calc(100% - 24px));
+  max-height: min(88dvh, 820px);
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: 0 24px 60px rgba(var(--sombra-rgb), 0.22);
+  transform: translate(-50%, -50%) scale(0.97);
+  opacity: 0;
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(.4, .1, .2, 1);
+}
+.modal[data-visible="true"] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal__cerrar {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--superficie2);
+  color: var(--texto-suave);
+  transition: color var(--transicion), border-color var(--transicion);
+}
+.modal__cerrar:hover { color: var(--texto); border-color: var(--texto-suave); }
+
+.modal__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px;
+}
+
+.modal .media { aspect-ratio: 16 / 10; }
+
+.modal__cat {
+  margin-top: 18px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.modal__nombre {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  /* normal, no 600: mismo criterio que .card__nombre, para que el precio
+     de abajo siga leyéndose como el dato principal */
+  font-weight: 400;
+  margin-top: 4px;
+  padding-right: 44px;
+}
+
+.modal__precios {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.modal__precios .precio { font-size: 1.9rem; }
+/* acá el precio anterior va al lado, no arriba: como .modal__precios es
+   flex, alcanza con sacarle el margen que trae para la tarjeta */
+.modal__precios .precio--anterior { margin: 0; font-size: 0.95rem; }
+
+.modal__agotado {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* ------------- INFORME DE ESTADO DE UN USADO (MODAL) ---------------
+   Va antes de la ficha técnica porque en un usado es lo que decide la
+   compra. Se enmarca en un bloque tintado para que se lea como un
+   informe aparte y no como más specs: la idea es que mostrar todo —
+   incluso la marca en el borde — genere confianza, no que se disimule.
+   ------------------------------------------------------------------ */
+.estado-equipo {
+  margin-top: 22px;
+  padding: 14px 16px 4px;
+  border: 1px solid var(--usado-borde);
+  border-radius: var(--radio-sm);
+  background: var(--usado-fondo);
+}
+.estado-equipo__titulo {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--usado-texto);
+}
+.estado-equipo__nota {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: var(--usado-texto);
+  opacity: 0.85;
+}
+/* dentro del bloque tintado el separador de arriba sobra (ya lo hace el
+   borde del bloque) y las líneas tienen que tomar el color del ámbar */
+.detalle--estado {
+  margin-top: 10px;
+  border-top: 0;
+}
+.detalle--estado .detalle__fila { border-bottom-color: var(--usado-borde); }
+.detalle--estado .detalle__fila:last-child { border-bottom: 0; }
+.detalle--estado dt { color: var(--usado-texto); opacity: 0.9; }
+
+/* --------- COMPARATIVO DE PRECIO CONTRA EL MODELO NUEVO ------------
+   Dentro del informe de estado: primero qué tiene el equipo, después
+   cuánto se ahorra. Las dos puntas en filas chicas y el ahorro
+   destacado abajo, que es el dato que se quiere que quede. */
+.ahorro {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--usado-borde);
+  border-radius: var(--radio-sm);
+  background: var(--superficie);
+}
+.ahorro__filas {
+  display: grid;
+  gap: 2px;
+}
+.ahorro__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+}
+.ahorro__etq { color: var(--texto-suave); }
+.ahorro__val {
+  color: var(--texto);
+  font-variant-numeric: tabular-nums;
+}
+.ahorro__val--tachado {
+  text-decoration: line-through;
+  /* tachado ya alcanza para bajarle jerarquía; con --texto-tenue encima
+     el contraste caía a 3.1 y el precio de referencia no se leía */
+  color: var(--texto-suave);
+}
+.ahorro__total {
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--usado-borde);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--acento);
+}
+.ahorro__pct {
+  font-family: var(--cuerpo);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+/* ------------------------ ENTREGA ESTIMADA -------------------------
+   Modal: una línea con el reloj a la izquierda y, debajo del plazo, la
+   aclaración chica de que se coordina. El plazo sale de una constante
+   de app.js (ENTREGA_ESTIMADA). */
+.entrega {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--superficie2);
+  font-size: 0.88rem;
+  color: var(--texto);
+}
+.entrega__ico {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--texto-suave);
+}
+.entrega__txt { display: block; }
+.entrega__nota {
+  display: block;
+  margin-top: 1px;
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}
+
+.detalle {
+  margin: 22px 0 0;
+  border-top: 1px solid var(--borde);
+}
+.detalle__fila {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--borde);
+}
+.detalle dt {
+  color: var(--texto-suave);
+  font-size: 0.82rem;
+}
+.detalle dd {
+  margin: 0;
+  color: var(--texto);
+  font-size: 0.93rem;
+}
+
+/* Fila, no columna: con los botones ajustados a su contenido, apilados
+   quedaban tres anchos distintos alineados a la izquierda (borde
+   dentado). En fila se leen como un grupo y aprovechan el ancho; si no
+   entran, envuelven. */
+.modal__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+/* =========================== RESPONSIVE ============================ */
+@media (min-width: 560px) {
+  .detalle__fila {
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  /* Las dos columnas de producto del comparador, exactamente iguales.
+     Con el ancho automático de una tabla cada columna se dimensiona por
+     su contenido, así que un nombre o una spec más larga de un lado
+     ensanchaba esa columna y las fotos quedaban de distinto tamaño.
+     table-layout:fixed reparte por el ancho declarado y no por el texto.
+     Va sólo de 560px para arriba: por debajo la tabla se apila y deja de
+     comportarse como tabla (ver la media query de abajo). */
+  .comparador__tabla { table-layout: fixed; }
+  .comparador__tabla thead th:first-child { width: 172px; }
+  .comparador__tabla thead th:not(:first-child) { width: auto; }
+
+  /* Con ancho fijo, una etiqueta larga ("Almacenamiento") ya no puede
+     ensanchar su columna: se deja envolver en vez de desbordar. */
+  .comparador__tabla tbody th[scope="row"] { white-space: normal; }
+}
+
+/* -------- CHECKOUT EN PANTALLAS ANCHAS -------- */
+@media (min-width: 900px) {
+  /* formulario a la izquierda, resumen fijo al costado */
+  .checkout__grid { grid-template-columns: minmax(0, 1fr) 330px; gap: 34px; }
+  .sugeridos__fila { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* En pantallas donde el resumen ya cae debajo, deja de estar pegado */
+@media (max-width: 899px) {
+  .checkout__resumen { position: static; }
+}
+
+/* ============================ RESPONSIVE =========================== */
+@media (min-width: 620px) {
+  .destacado-card { padding: 22px; }
+  .opciones--horarios { grid-template-columns: repeat(3, 1fr); }
+
+  /* Combo en fila de TRES columnas: fotos | qué incluye | precio y
+     acciones. Con dos columnas, el texto + precio + botones apilados
+     hacían una columna mucho más alta que las fotos y el banner quedaba
+     con un hueco blanco de más de 200px al lado de las fotos. Repartido
+     en tres, la altura la marca la columna más alta de las tres y el
+     banner queda bajo.
+     align-items: flex-start — nada se estira para igualar al más alto,
+     que es justo lo que generaba el espacio muerto. */
+  .card--combo {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 26px;
+  }
+  .combo__fotos { flex: 0 0 300px; }
+  .combo__info { flex: 1 1 200px; }
+  /* Se dimensiona a su contenido (así los dos botones entran en una fila
+     sin hardcodear un ancho que se rompa si cambian los textos) pero con
+     shrink habilitado: en pantallas intermedias se angosta y los botones
+     se apilan, en vez de desbordar. */
+  .combo__compra { flex: 0 1 auto; }
+}
+
+/* La cápsula entra entera en una sola fila: se encoge al ancho de su
+   contenido y queda centrada. Debajo de 720px vuelve a dos filas. */
+@media (min-width: 720px) {
+  .navbar {
+    flex-wrap: nowrap;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    border-radius: 99px;
+  }
+  .navbar__sep { display: block; }
+  .brand { margin-right: 0; }
+  .nav {
+    order: 0;
+    flex: 0 1 auto;
+    white-space: normal;
+    padding-inline: 0;
+  }
+  .cart-btn { order: 0; }
+  .tema-btn { order: 0; }
+
+  /* Catálogo: el principal ocupa la columna ancha y dos filas; el resto
+     entra en las dos columnas de la derecha. */
+  /* Tres columnas IGUALES. Antes la primera era 1.5fr para darle aire a
+     la tarjeta grande, pero como esa ocupa sólo dos filas, cuando la
+     sección tiene un número impar de tarjetas normales una cae en esa
+     columna ancha: al ser más ancha, su foto (que va por aspect-ratio)
+     queda más alta y esa tarjeta terminaba midiendo distinto que el
+     resto. Con las columnas iguales, todas las tarjetas miden lo mismo
+     caigan donde caigan, y la grande se sigue distinguiendo por ocupar
+     el doble de alto. */
+  .grilla { grid-template-columns: repeat(3, 1fr); }
+  .card--principal { grid-column: 1; grid-row: span 2; }
+
+  /* ---------------- TARJETA COMPACTA EN ESCRITORIO ------------------
+     La tarjeta estaba dimensionada para tres columnas anchas y con el
+     mouse se leía enorme. Se recorta el aire (padding y gap), se bajan
+     un escalón el nombre y el precio y se achica el botón de agregar.
+     TODO va dentro de esta media query: en mobile la tarjeta y el botón
+     quedan como estaban, con sus 44px de área de toque.
+     Nada de esto rompe la altura pareja: se achican por igual en todas,
+     y los altos reservados (nombre, specs, ahorro, stock) siguen
+     estando — sólo cambian de valor, no de criterio. */
+  .card { padding: 12px; gap: 10px; }
+  .card__nombre { font-size: 0.95rem; }
+  .card__specs { margin-top: 4px; font-size: 0.79rem; }
+  .card__precios .precio { font-size: 1.2rem; }
+  .card__acciones { gap: 6px; }
+
+  /* Botón de acción más contenido: el bloque del ícono y el del texto
+     pierden 2px arriba y abajo, el ícono baja de 16 a 14 y se libera el
+     min-height de 44px, que es una medida pensada para el dedo. Con
+     mouse, 32px es cómodo y deja respirar la tarjeta. */
+  .card .btn,
+  .modal__acciones .btn {
+    min-height: 0;
+    font-size: 11.5px;
+  }
+  .card .btn__ico,
+  .modal__acciones .btn__ico { padding: 7px 9px; }
+  .card .btn__txt,
+  .modal__acciones .btn__txt { padding: 7px 10px; }
+  .card .btn__ico .ico,
+  .modal__acciones .btn__ico .ico { width: 14px; height: 14px; }
+}
+
+/* Cuatro por fila cuando el ancho da: con la tarjeta ya compacta, tres
+   columnas dejaban tarjetas de 330px que se leían enormes.
+   EL CORTE ESTÁ EN 1180px A PROPÓSITO, que es donde .wrap llega a su
+   ancho máximo y las columnas dejan de crecer. Más abajo, la cuarta
+   columna dejaba la fila de botones al límite: "Avisame" (sin stock)
+   mide 2.7px más que "Agregar", y en ese margen unas tarjetas apilaban
+   los dos botones y otras no — con lo cual dejaban de medir todas lo
+   mismo, que es justo lo que no puede pasar. Con 4 columnas recién a
+   partir de 1180px sobran ~24px y las dos variantes entran siempre en
+   una sola fila. */
+@media (min-width: 1180px) {
+  .grilla { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Mobile (<720px): el panel no es un flotante chico sino un bloque de
+   ancho completo que cae debajo de la cápsula, como acordeón. Se ancla a
+   .navbar (position:relative) para no quedar recortado por nada. */
+@media (max-width: 719px) {
+  /* La cápsula flotante no llega a los bordes: deja 20px de gutter
+     transparente a cada lado, y como .header no tenía fondo, el contenido
+     que scrollea por debajo asomaba por esas dos franjas. En mobile la
+     cápsula ocupa casi todo el ancho, así que esas franjas no se leían
+     como "diseño flotante" sino como una falla.
+     Solución: la banda del header se vuelve opaca, del color del fondo de
+     la página — el mismo que se ve arriba de todo antes de scrollear —,
+     así la cápsula sigue flotando pero nada se cuela por los costados.
+     Y pointer-events vuelve a auto: si tapa contenido, tiene que
+     interceptar el toque, no dejarlo pasar a algo invisible. */
+  #app-header { background: var(--fondo); }
+  .header { pointer-events: auto; }
+  .header > .wrap { pointer-events: auto; }
+
+  /* ------------- LA CÁPSULA EN MOBILE: DOS FILAS FIJAS -------------
+     Antes esto era el mismo flex con flex-wrap:wrap del desktop y las
+     dos filas salían "de casualidad": los links tenían flex-basis 100%
+     y por eso caían solos. El problema es que la fila de arriba
+     (logotipo + tema + carrito) también podía romperse, y a 320px se
+     rompía: pedía 275px y sólo había 258, así que el carrito se caía a
+     una fila propia — tres filas, cápsula de 134px de alto y el
+     carrito suelto contra el borde izquierdo.
+     Con grid las filas dejan de ser una consecuencia del ancho y pasan
+     a ser la definición del layout: arriba SIEMPRE van los tres
+     controles, abajo SIEMPRE los links. No hay ancho de pantalla que
+     pueda partir la fila de arriba en dos. */
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "marca tema carrito"
+      "nav   nav  nav";
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 2px;
+    /* 2px menos de padding lateral que en desktop: a 320px cada píxel
+       del ancho de la cápsula se reparte entre logotipo y controles */
+    padding: 6px 8px 6px 10px;
+  }
+  /* el logotipo también es un enlace (va a la portada): ocupa el alto
+     entero de la fila, que ya mide 44px, así queda con la misma medida
+     de toque que el resto sin agrandar nada */
+  .brand {
+    grid-area: marca;
+    min-width: 0;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .tema-btn { grid-area: tema; }
+  .cart-btn { grid-area: carrito; }
+  .nav { grid-area: nav; min-width: 0; }
+
+  /* El logotipo es el elemento más ancho de la fila (135px de los 258
+     disponibles a 320px) y es el único que puede ceder: los otros dos
+     son controles con medida mínima de toque. Se achica sólo lo
+     necesario y sólo en pantallas chicas — de 378px para arriba
+     conserva su tamaño de siempre. El tope de abajo (0.78rem ≈ 12.5px)
+     es el límite en que sigue leyéndose como logotipo. */
+  .logo {
+    font-size: clamp(0.78rem, 4vw, 0.92rem);
+  }
+  /* el interletrado ancho es lo que más engorda "IPHONE": se afloja un
+     poco en mobile, lo justo para no perder el aire de logotipo */
+  .navbar .logo__cat { letter-spacing: 0.14em; }
+
+  /* --------------- MEDIDA MÍNIMA DE TOQUE: 44px ---------------------
+     Los cuatro controles quedaban por debajo (el carrito 36px de alto,
+     el tema 38x38 y los links 23px). Se agrandan sólo en mobile: en
+     desktop la cápsula se maneja con mouse y las pastillas chicas son
+     parte del diseño. */
+  .tema-btn { width: 44px; height: 44px; }
+  .cart-btn { min-height: 44px; padding-inline: 12px; }
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    /* "Inicio" es el link más angosto y es el que manda: mide 42.8px en
+       las páginas de categoría (en la portada va en negrita y estira a
+       46). Con 6px de aire a cada lado los tres pasan de 44 holgados.
+       El gap baja de 18 a 12 para compensar, así la separación visual
+       entre links queda parecida a la de antes. */
+    padding-inline: 6px;
+  }
+  .nav-drop__btn { min-height: 44px; }
+
+  /* Los links no entran en el ancho de un celular chico si el día de
+     mañana se suma una entrada más: en vez de desbordar la cápsula o
+     caer a una tercera fila, la fila de abajo scrollea sola en
+     horizontal. Hoy los tres entran a 320px, así que esto no se activa
+     — es el respaldo para que nunca vuelva a cortarse nada.
+     El panel del desplegable NO lo recorta este overflow: cuelga de
+     .navbar (position:relative), que es ancestro de .nav, y el recorte
+     de un contenedor con scroll no alcanza a los absolutos anclados
+     por fuera de él. */
+  .nav {
+    gap: 12px;
+    /* el aire lateral ahora lo ponen los propios links con su padding:
+       si además lo pusiera el nav, se sumaría dos veces y a 320px es
+       justo el ancho que falta para que los tres links entren */
+    padding-inline: 0;
+    /* ANILLO DE FOCO Y OVERFLOW: overflow-x recorta todo lo que se salga
+       de la caja, y el anillo de :focus-visible se dibuja 3px POR FUERA
+       del link (outline-offset). Sin esto, al llegar con Tab a los links
+       de la navbar el anillo quedaba cortado arriba y abajo — medido:
+       el anillo iba de 61.8 a 115.8 y el contenedor recortaba en 66.8 y
+       110.8. El padding hace lugar para el anillo y el margen negativo
+       lo devuelve, así que la cápsula no cambia de alto. Es la misma
+       solución que ya usaba .filtros (las pastillas de categoría). */
+    padding-block: 6px;
+    margin-block: -6px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  /* la cápsula ahora es más alta (dos filas de 44px): el destino de los
+     saltos con ancla tiene que bajar otro tanto para no quedar tapado */
+  html { scroll-padding-top: 132px; }
+
+  .nav-drop { position: static; }
+  .nav-drop__panel {
+    left: 6px;
+    right: 6px;
+    min-width: 0;
+    top: calc(100% + 6px);
+  }
+
+  /* SOLAPE CERO con el "Agregar al carrito" de las tarjetas, que ocupa
+     todo el ancho. El borde derecho de ese botón cae siempre a 35px del
+     borde de la pantalla (20 de gutter + 14 de padding + 1 de borde), así
+     que mientras `right + width` no pase de 35 los dos rectángulos no se
+     tocan a NINGÚN ancho de pantalla ni a ninguna altura de scroll:
+     5 + 30 = 35. Es el botón más grande que entra sin pisar nada; 30px
+     sigue estando por encima del mínimo de 24px de WCAG 2.5.8. */
+  .arriba-btn {
+    right: 5px;
+    bottom: 16px;
+    width: 30px;
+    height: 30px;
+  }
+  .arriba-btn .ico { width: 16px; height: 16px; }
+
+  /* Tres controles no entran al lado de las pastillas: las herramientas
+     bajan y ocupan todo el ancho. El rango se lleva una fila entera (son
+     dos campos para escribir, conviene que respiren) y abajo comparten
+     fila el orden y el buscador. Así no queda ninguna fila con un solo
+     ícono suelto. */
+  .herramientas {
+    width: 100%;
+    margin-left: 0;
+    gap: 8px;
+  }
+  .rango { flex: 1 1 100%; }
+  .rango__campo { width: 100%; }
+
+  /* Con el filtro nuevo/usado son cuatro controles: el rango se lleva su
+     fila, el filtro de condición se lleva la suya (las tres pastillas
+     reparten el ancho en partes iguales) y abajo comparten fila el orden
+     y el buscador. Así ninguna fila queda con un control apretado ni con
+     uno suelto, y la barra no necesita scroll horizontal. */
+  .condicion {
+    flex: 1 1 100%;
+    justify-content: stretch;
+  }
+  .condicion__op {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 4px;
+  }
+
+  .orden__select { flex: 1 1 auto; min-width: 0; }
+  .buscador { flex: 0 0 auto; margin-left: auto; }
+}
+
+@media (min-width: 900px) {
+  :root { --gutter: 32px; }
+
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    padding-block: 40px 70px;
+  }
+
+  /* composición asimétrica: texto ancho a la izquierda, producto a la derecha */
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 60px;
+    width: 100%;
+  }
+
+  .hero__producto { justify-self: end; width: 100%; max-width: 400px; }
+
+  .seccion { padding-block: 88px; }
+
+  .carrusel__flecha { display: grid; place-items: center; }
+  .carrusel__slide { padding: 26px; }
+
+  /* El carrusel estaba centrado (margin-inline:auto) mientras el título
+     de su sección arranca a la izquierda como todos los demás: quedaba
+     248px corrido respecto de su propio encabezado. Acá se alinea al eje
+     del contenido. El desplazamiento es de 62px —el ancho de la flecha
+     más su separación— para que lo primero que se ve del componente, que
+     es la flecha, caiga sobre ese eje y no el borde de la tarjeta.
+     Sólo en este breakpoint: es donde aparecen las flechas. Por debajo
+     el carrusel ocupa el ancho disponible y ya arranca alineado. */
+  .carrusel { margin-inline: 62px 0; }
+
+  .secciones { gap: 86px; }
+  .cat__head { padding-bottom: 16px; margin-bottom: 28px; }
+}
+
+@media (min-width: 1120px) {
+  .hero__titulo { font-size: 4.6rem; }
+  .datos { gap: 14px 48px; }
+}
+
+/* ===================== PREFERS-REDUCED-MOTION =====================
+   Sin animaciones ni scroll animado si el sistema lo pide.
+   ================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn--primario:active { transform: none; }
+
+  /* el estado final se aplica igual, sólo que sin recorrido */
+  .card { opacity: 1; }
+  .linea-wrap--sale > .linea { transform: none; }
+  .toast[data-visible="true"] { transform: translate(-50%, 0) scale(1); }
+  .link-sub:hover::after,
+  .link-sub:focus-visible::after { transform: scaleX(1); }
+}
+
