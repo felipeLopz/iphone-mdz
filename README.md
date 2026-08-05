@@ -1,5 +1,11 @@
+<!-- >>> PERSONALIZAR <<< [40] el título de abajo lleva el nombre del negocio
+     ANTERIOR. Este README es público (el repo está en GitHub), así que es
+     de los primeros lugares donde alguien lee el nombre viejo. -->
 # IPHONE ALLEN — landing de la tienda
 
+<!-- >>> PERSONALIZAR <<< [41] el párrafo de abajo nombra la LOCALIDAD y la
+     PROVINCIA del negocio anterior ("Allen, Río Negro"). El comercio nuevo
+     es de MENDOZA. -->
 Landing de una tienda online que revende productos Apple en Allen, Río Negro. Está hecha con HTML, CSS y JavaScript simple: no usa React, Vue, ni ningún framework, y no hace falta instalar nada para editarla ni para probarla.
 
 Los cuatro archivos que la forman son:
@@ -44,7 +50,11 @@ Los textos provisorios ya no se ven como corchetes en pantalla: se reemplazaron 
    Archivo `app.js`, objeto `CONTACTO`, campo `email`. Hoy dice `'[CORREO]'`. **No se muestra en ninguna parte**: el pie de página ya no lleva íconos de redes (WhatsApp e Instagram quedaron sólo en la sección Contacto). El campo queda ahí como dato del negocio, para cuando se decida dónde publicarlo.
 
 4. **La dirección del local.**
-   Hoy figura "Río Cuarto 2341, Allen, Río Negro" en el hero y en el pie. Es **provisoria**: está marcada con el comentario `DIRECCIÓN PROVISORIA` en `index.html` y en `app.js` (constante `DIRECCION`). Confirmarla con el cliente antes de publicar.
+   Hoy figura "Río Cuarto 2341, Allen, Río Negro" en el hero y en el pie. Es **provisoria** y está escrita en **dos lugares distintos**, que hay que cambiar los dos: <!-- >>> PERSONALIZAR <<< [42] la dirección y la provincia de abajo son del negocio anterior; el comercio nuevo es de Mendoza -->
+   - `app.js`, constante `DIRECCION` (marcador de personalización `[13]`). El comentario `DIRECCIÓN PROVISORIA` está en `htmlFooter()`, donde se usa la constante.
+   - `index.html`, párrafo `.hero__direccion` (marcador de personalización `[3]`).
+
+   **Corrección:** hasta ahora este README decía que el comentario `DIRECCIÓN PROVISORIA` estaba "en `index.html` y en `app.js`". Es falso: en `index.html` no existe esa cadena. El único `DIRECCIÓN PROVISORIA` del proyecto está en `app.js`; en `index.html` el aviso es un marcador de personalización. Confirmar la dirección con el cliente antes de publicar.
 
 5. **La promo bancaria: las cuotas y las tarjetas.**
    La franja `#promo` de `index.html` anuncia **"3, 6 y 12 cuotas sin interés"** y muestra tres medios de pago (Visa, Mastercard, Cabal). **Las dos cosas son provisorias y hay que confirmarlas con el cliente**: las cuotas dependen de lo que le ofrezca cada banco.
@@ -67,7 +77,7 @@ Los textos provisorios ya no se ven como corchetes en pantalla: se reemplazaron 
 
    Se agregó a propósito para que Google **no** indexe el sitio mientras todavía tiene los textos provisorios de arriba sin completar — así nadie lo encuentra a medio terminar. Tiene un comentario al lado que lo explica. **Antes de publicar el sitio de verdad, hay que borrar esa línea en las seis páginas.** Si se publica con esa línea puesta, el sitio va a funcionar perfecto, pero no va a aparecer en los resultados de Google.
 
-   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphone-allen.vercel.app/`: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`.
+   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphone-allen.vercel.app/`: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`. <!-- >>> PERSONALIZAR <<< [43] el dominio de arriba es el del negocio anterior y su slug contiene "allen"; ver también la nota del final sobre renombrar el repositorio -->
 
 ---
 
@@ -108,6 +118,9 @@ Se edita ahí y cambia en los dos lugares a la vez. Vale igual para nuevos y usa
 
 ### El contador de la pestaña
 
+<!-- >>> PERSONALIZAR <<< [44] el ejemplo del párrafo de abajo lleva el nombre
+     del negocio anterior ("IPHONE ALLEN"). Es documentación, no código, pero
+     es público. -->
 Cuando el carrito tiene productos, el título de la pestaña del navegador arranca con la cantidad: `(3) iPhones — IPHONE ALLEN…`. Con el carrito vacío se ve el título normal. El número son **unidades** (respeta las cantidades, no cuenta líneas), se actualiza al agregar, quitar y cambiar cantidades, y como el carrito vive en `localStorage` sigue estando al pasar de una página a otra. Cada página conserva su propio título: el número se le antepone.
 
 ---
@@ -412,3 +425,18 @@ Esa regla está en `styles.css`, y hoy cubre estos tres casos:
 ```
 
 **Si se agrega un botón nuevo dentro de una tarjeta del catálogo o de un slide del carrusel, hay que sumar su selector a esta misma regla.** Si no se hace, el botón se va a ver perfecto pero el clic no le va a llegar nunca — va a "atravesar" el botón y activar el enlace invisible de más abajo, abriendo el detalle del producto en lugar de hacer lo que el botón nuevo debía hacer.
+
+---
+
+## PENDIENTE
+
+**PENDIENTE: renombrar el repositorio en GitHub, el nombre actual contiene 'allen' y define la URL de Vercel.**
+
+Es lo único de la personalización que **no se resuelve editando archivos**: el
+nombre del repo se cambia desde la configuración de GitHub, y Vercel deriva de
+ahí el subdominio por defecto (`iphone-allen.vercel.app`). Mientras no se
+renombre, la constante `SITIO` de `app.js` y las etiquetas `og:url` / `og:image`
+de las seis páginas no pueden apuntar al dominio definitivo.
+
+Orden sugerido: renombrar el repo → confirmar el nuevo dominio en Vercel →
+recién ahí completar `SITIO` y las doce etiquetas Open Graph.

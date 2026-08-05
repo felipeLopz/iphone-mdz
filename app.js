@@ -1,4 +1,10 @@
 /* =====================================================================
+   >>> PERSONALIZAR <<< [35] el encabezado de aca abajo lleva el nombre
+   del negocio anterior. Es la primera de las TRES menciones de la marca
+   en este archivo que estan FUERA del bloque de CONFIGURACION: las otras
+   dos son la constante NEGOCIO (marcador [11], en el bloque de abajo) y
+   el comentario del contador de pestana (marcador [37], al final).
+   =====================================================================
    IPHONE ALLEN — lógica de la tienda
    Vanilla JS, sin dependencias, sin build step.
    =====================================================================
@@ -210,6 +216,11 @@
     { p: '¿Qué garantía tienen?', r: 'Consultanos por la garantía disponible según el equipo.' },
     { p: '¿Los equipos vienen liberados?', r: 'Sí, los equipos vienen liberados para usar con cualquier compañía.' },
     { p: '¿Cómo puedo pagar?', r: 'Aceptamos efectivo, transferencia y tarjeta. Escribinos para coordinar la forma de pago.' },
+    // >>> PERSONALIZAR <<< [36] la respuesta de abajo nombra la LOCALIDAD
+    // del negocio anterior ("Allen"). El comercio nuevo es de MENDOZA, asi
+    // que hay que reescribir la zona de envios entera, no solo el nombre.
+    // Lleva marcador propio porque queda 13 lineas debajo del marcador del
+    // array FAQ y es el unico dato geografico enterrado en un texto largo.
     { p: '¿Hacen envíos? ¿A qué zonas?', r: 'Hacemos envíos a Allen y ciudades vecinas. Consultanos por tu zona.' },
     { p: '¿Puedo retirar en persona?', r: 'Sí, podés retirar tu pedido en el local. Coordinamos el horario por WhatsApp.' },
     { p: '¿Qué pasa si el equipo viene con una falla?', r: 'Escribinos apenas lo notes y lo resolvemos juntos.' }
@@ -3429,6 +3440,11 @@
   }
 
   /* ------------- CONTADOR DEL CARRITO EN LA PESTAÑA ------------------
+     >>> PERSONALIZAR <<< [37] el ejemplo de la linea de abajo lleva el
+     nombre del negocio anterior. Es solo un comentario, pero es la mencion
+     mas lejana al bloque de CONFIGURACION (unas 3350 lineas): quien busca
+     "IPHONE ALLEN" desde arriba y se cansa, no llega hasta aca.
+     -------------------------------------------------------------------
      "(2) iPhones — IPHONE ALLEN…". El title propio de cada página no se
      reemplaza: TITULO_BASE se guarda arriba de todo, al arrancar, y el
      número se le antepone, así las seis páginas conservan el suyo.

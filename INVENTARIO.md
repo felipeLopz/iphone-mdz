@@ -1,5 +1,14 @@
 # INVENTARIO — puntos de personalización
 
+> **Nota — este documento es la foto del relevamiento inicial.** Después de
+> escribirlo se agregaron los marcadores `[22]` a `[44]` en los puntos ciegos
+> que lista la sección *Ocurrencias fuera de marcador*, y eso **corrió los
+> números de línea** de `app.js`, `styles.css`, `favicon.svg`, `README.md` y los
+> seis HTML. Los marcadores ya no son 21 sino **44**.
+> Para trabajar, usar `PERSONALIZAR.md`, que tiene los números actualizados y
+> las secciones *Las tres caras de la palabra Allen* y *Cambio de provincia*.
+> Este archivo se conserva como registro de qué se encontró y dónde.
+
 Relevamiento en **modo solo lectura** del proyecto (ningún archivo del sitio fue
 modificado). El objetivo es tener el mapa completo de qué hay que cambiar para
 el cliente nuevo, incluyendo lo que **no** está marcado.
@@ -173,9 +182,6 @@ Mismas líneas y misma estructura que `iphones.html`:
 
 ### Notas sobre etiquetas ausentes
 
-- **No existe `og:site_name` en ninguna de las seis páginas.** Tampoco
-  `application-name` ni `theme-color`. Si se quiere agregar `og:site_name`, hay
-  que crearlo, no editarlo.
 - **El header y el footer no están en el HTML.** El logotipo lo genera `app.js`
   (`htmlLogo()`, línea 1009) a partir de la constante `NEGOCIO`, y se inyecta en
   los `<div id="app-header">` / `<div id="app-footer">` de cada página. Por eso
@@ -394,14 +400,10 @@ publica sin sacarlas, el sitio funciona perfecto pero no aparece en Google.
 
 ### Estructuras que el checklist da por existentes y no están
 
-11. **No existe `og:site_name` en ninguna página.** Tampoco `application-name`
-    ni `theme-color`. Si se busca esa etiqueta para poner el nombre nuevo, no se
-    va a encontrar: hay que crearla.
-
-12. **No hay etiquetas `alt` escritas a mano en los HTML.** Los `alt` se generan
+11. **No hay etiquetas `alt` escritas a mano en los HTML.** Los `alt` se generan
     en `app.js` desde `p.nombre`, así que no hay nada que personalizar ahí.
 
-13. **No existe una imagen de Open Graph propia.** §4 pide reemplazar `og:image`
+12. **No existe una imagen de Open Graph propia.** §4 pide reemplazar `og:image`
     por una de 1200 × 630 px, pero en `img/` no hay ningún archivo con esa
     finalidad: hoy las seis páginas apuntan a fotos cuadradas de producto.
 

@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!-- >>> PERSONALIZAR <<< La letra "A" de abajo es la inicial del
+       >>> PERSONALIZAR <<< [39] la linea que sigue nombra ademas la
+       LOCALIDAD anterior ("Allen"). El comercio nuevo es de MENDOZA: al
+       cambiar la letra hay que limpiar tambien esa mencion del texto.
        negocio ANTERIOR ("Allen"). Cambiarla por la inicial del cliente
        nuevo, y regenerar despues favicon-32.png y apple-touch-icon.png
        (180x180) a partir de este SVG, porque son los que ve la pestana

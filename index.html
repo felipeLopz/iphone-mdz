@@ -67,9 +67,13 @@
 <!-- OJO: sacar esta línea antes de publicar el sitio de verdad. Está acá
      para que Google no indexe la página mientras todavía tiene textos
      placeholder sin completar (ver README.md). -->
+<!-- >>> PERSONALIZAR <<< [22] QUITAR ANTES DE PUBLICAR - bloquea Google en las 6 paginas -->
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Vista previa al compartir el link (WhatsApp, redes).
+     >>> PERSONALIZAR <<< [28] dominio del negocio anterior. En esta pagina
+     aparece TRES veces: aca abajo en el texto del comentario, en og:image y
+     en og:url. Tiene que coincidir con la constante SITIO de app.js.
      OJO 1: og:url y og:image apuntan a https://iphone-allen.vercel.app/.
      Si el sitio pasa a un dominio propio hay que actualizarlas en los
      SEIS HTML y en la constante SITIO de app.js.
@@ -87,6 +91,11 @@
 <!--
   ============================================================
   CÓMO PERSONALIZAR ESTA PÁGINA
+  ============================================================
+  >>> PERSONALIZAR <<< [34] este bloque nombra al negocio anterior en la
+  linea de abajo. Es la CUARTA ocurrencia de la marca en index.html y la
+  unica que no vive en una etiqueta del head: por eso se escapa cuando se
+  revisan solo title, description y og.
   ============================================================
   1) NOMBRE DEL NEGOCIO: "IPHONE ALLEN" aparece en el <title>, la meta
      description, el logotipo (header y footer, clase .logo) y en
