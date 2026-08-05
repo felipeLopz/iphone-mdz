@@ -430,13 +430,18 @@ Esa regla está en `styles.css`, y hoy cubre estos tres casos:
 
 ## PENDIENTE
 
-**PENDIENTE: renombrar el repositorio en GitHub, el nombre actual contiene 'allen' y define la URL de Vercel.**
+El repositorio ya se llama **`iphone-mdz`** (antes tenía el nombre del comercio
+anterior). **Queda pendiente confirmar el proyecto y el dominio en Vercel.**
 
-Es lo único de la personalización que **no se resuelve editando archivos**: el
-nombre del repo se cambia desde la configuración de GitHub, y Vercel deriva de
-ahí el subdominio por defecto (`iphone-allen.vercel.app`). Mientras no se
-renombre, la constante `SITIO` de `app.js` y las etiquetas `og:url` / `og:image`
-de las seis páginas no pueden apuntar al dominio definitivo.
+Es la parte de la personalización que **no se resuelve editando archivos**: hay
+que confirmar en Vercel que el proyecto quedó apuntando al repo renombrado y
+cuál es el dominio definitivo — el que Vercel deriva del nombre del repo, o uno
+propio si el cliente lo contrata.
 
-Orden sugerido: renombrar el repo → confirmar el nuevo dominio en Vercel →
-recién ahí completar `SITIO` y las doce etiquetas Open Graph.
+Hasta que ese dominio esté confirmado, la constante `SITIO` de `app.js` y las
+etiquetas `og:url` / `og:image` de las seis páginas siguen con el dominio del
+comercio anterior (`iphone-allen.vercel.app`), que está puesto a propósito como
+ejemplo del formato.
+
+Orden sugerido: confirmar el proyecto y el dominio en Vercel → recién ahí
+completar `SITIO` y las doce etiquetas Open Graph.
