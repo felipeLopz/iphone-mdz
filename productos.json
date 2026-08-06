@@ -1,175 +1,119 @@
 {
   "productos": [
     {
-      "id": "iphone-16-pro-max-256",
-      "nombre": "iPhone 16 Pro Max 256 GB",
+      "id": "iphone-16-pro-256",
+      "nombre": "iPhone 16 Pro 256 GB",
       "categoria": "iPhone",
-      "precio": 3249000,
-      "precioAnterior": 3490000,
+      "precio": 2850000,
       "destacado": true,
       "etiqueta": "nuevo",
       "principal": true,
-      "stock": 3,
+      "stock": 2,
       "specs": [
         "256 GB",
-        "Titanio natural",
+        "Titanio negro",
         "Batería 100%",
         "Liberado"
       ],
       "detalle": {
-        "Pantalla": "6.9\" Super Retina XDR",
+        "Pantalla": "6.3\" Super Retina XDR, 120 Hz ProMotion",
         "Procesador": "A18 Pro",
         "Cámara": "48 MP principal + 48 MP ultra gran angular + 12 MP teleobjetivo 5x",
-        "Batería": "Hasta 33 h de video · salud 100%",
+        "Batería": "Hasta 27 h de video · salud 100%",
         "Almacenamiento": "256 GB",
-        "Color": "Titanio natural",
+        "Color": "Titanio negro",
         "Conector": "USB-C",
         "Estado": "Sellado, liberado de fábrica"
       },
-      "imagen": ""
+      "imagen": "img/iphone-16-pro-max-256.jpg"
     },
     {
       "id": "iphone-15-pro-256",
       "nombre": "iPhone 15 Pro 256 GB",
       "categoria": "iPhone",
-      "precio": 2599000,
+      "precio": 2250000,
+      "precioAnterior": 2490000,
       "destacado": true,
+      "etiqueta": "oferta",
       "principal": false,
-      "stock": 2,
+      "stock": 3,
       "specs": [
         "256 GB",
         "Titanio azul",
-        "Batería 96%",
+        "Batería 100%",
         "Liberado"
       ],
       "detalle": {
-        "Pantalla": "6.1\" Super Retina XDR",
+        "Pantalla": "6.1\" Super Retina XDR, 120 Hz ProMotion",
         "Procesador": "A17 Pro",
         "Cámara": "48 MP principal + 12 MP ultra gran angular + 12 MP teleobjetivo 3x",
-        "Batería": "Hasta 23 h de video · salud 96%",
+        "Batería": "Hasta 23 h de video · salud 100%",
         "Almacenamiento": "256 GB",
         "Color": "Titanio azul",
-        "Conector": "USB-C",
-        "Estado": "Sellado, liberado de fábrica"
-      },
-      "imagen": ""
-    },
-    {
-      "id": "iphone-15-128",
-      "nombre": "iPhone 15 128 GB",
-      "categoria": "iPhone",
-      "precio": 1749000,
-      "precioAnterior": 1899000,
-      "destacado": false,
-      "etiqueta": "oferta",
-      "principal": false,
-      "stock": 5,
-      "specs": [
-        "128 GB",
-        "Negro",
-        "Batería 100%",
-        "Sellado"
-      ],
-      "detalle": {
-        "Pantalla": "6.1\" Super Retina XDR",
-        "Procesador": "A16 Bionic",
-        "Cámara": "48 MP principal + 12 MP ultra gran angular",
-        "Batería": "Hasta 20 h de video · salud 100%",
-        "Almacenamiento": "128 GB",
-        "Color": "Negro",
         "Conector": "USB-C",
         "Estado": "Sellado, liberado de fábrica"
       }
     },
     {
+      "id": "iphone-15-pro-128-usado",
+      "nombre": "iPhone 15 Pro 128 GB (usado)",
+      "categoria": "iPhone",
+      "condicion": "usado",
+      "anio": 2023,
+      "equivaleNuevo": "iphone-15-pro-256",
+      "precio": 1750000,
+      "destacado": false,
+      "principal": false,
+      "stock": 1,
+      "specs": [
+        "128 GB",
+        "Titanio negro",
+        "Liberado"
+      ],
+      "estado": {
+        "bateria": 91,
+        "pantalla": "Sin rayones, tiene vidrio templado colocado desde el primer día",
+        "carcasa": "Micro marca en el marco inferior derecho, sólo se ve a contraluz",
+        "uso": "1 año y 3 meses",
+        "reparaciones": "Ninguna",
+        "accesorios": "Con caja y cable original, sin adaptador de corriente"
+      },
+      "detalle": {
+        "Pantalla": "6.1\" Super Retina XDR, 120 Hz ProMotion",
+        "Procesador": "A17 Pro",
+        "Cámara": "48 MP principal + 12 MP ultra gran angular + 12 MP teleobjetivo 3x",
+        "Batería": "Hasta 23 h de video · salud 91%",
+        "Almacenamiento": "128 GB",
+        "Color": "Titanio negro",
+        "Conector": "USB-C",
+        "Estado": "Usado muy bueno, liberado"
+      },
+      "imagen": "img/iphone-15-128.jpg"
+    },
+    {
       "id": "iphone-14-128",
       "nombre": "iPhone 14 128 GB",
       "categoria": "iPhone",
-      "precio": 1399000,
-      "precioAnterior": 1549000,
+      "precio": 1290000,
       "destacado": false,
       "principal": false,
       "stock": 4,
       "specs": [
         "128 GB",
-        "Azul medianoche",
-        "Batería 92%",
-        "Liberado"
+        "Púrpura",
+        "Batería 100%",
+        "Sellado"
       ],
       "detalle": {
         "Pantalla": "6.1\" Super Retina XDR",
         "Procesador": "A15 Bionic",
         "Cámara": "12 MP principal + 12 MP ultra gran angular",
-        "Batería": "Hasta 20 h de video · salud 92%",
+        "Batería": "Hasta 20 h de video · salud 100%",
         "Almacenamiento": "128 GB",
-        "Color": "Azul medianoche",
+        "Color": "Púrpura",
         "Conector": "Lightning",
         "Estado": "Sellado, liberado de fábrica"
-      },
-      "imagen": ""
-    },
-    {
-      "id": "iphone-14-128-usado",
-      "nombre": "iPhone 14 128 GB (usado)",
-      "categoria": "iPhone",
-      "condicion": "usado",
-      "anio": 2022,
-      "equivaleNuevo": "iphone-14-128",
-      "precio": 1150000,
-      "destacado": false,
-      "principal": false,
-      "stock": 2,
-      "specs": [
-        "128 GB",
-        "Azul medianoche",
-        "Liberado"
-      ],
-      "estado": {
-        "bateria": 92,
-        "pantalla": "Sin rayones",
-        "carcasa": "Marca leve en el borde inferior",
-        "uso": "1 año y medio",
-        "reparaciones": "Ninguna",
-        "accesorios": "Con caja, sin cargador"
-      },
-      "detalle": {
-        "Pantalla": "6.1\" Super Retina XDR",
-        "Procesador": "A15 Bionic",
-        "Cámara": "12 MP principal + 12 MP ultra gran angular",
-        "Batería": "Hasta 20 h de video · salud 92%",
-        "Almacenamiento": "128 GB",
-        "Color": "Azul medianoche",
-        "Conector": "Lightning",
-        "Estado": "Usado muy bueno, liberado"
-      },
-      "imagen": "img/iphone-14-128.jpg"
-    },
-    {
-      "id": "iphone-13-128",
-      "nombre": "iPhone 13 128 GB",
-      "categoria": "iPhone",
-      "precio": 1099000,
-      "destacado": false,
-      "etiqueta": "oferta",
-      "principal": false,
-      "stock": 0,
-      "specs": [
-        "128 GB",
-        "Blanco estelar",
-        "Batería 89%",
-        "Liberado"
-      ],
-      "detalle": {
-        "Pantalla": "6.1\" Super Retina XDR",
-        "Procesador": "A15 Bionic",
-        "Cámara": "12 MP principal + 12 MP ultra gran angular",
-        "Batería": "Hasta 19 h de video · salud 89%",
-        "Almacenamiento": "128 GB",
-        "Color": "Blanco estelar",
-        "Conector": "Lightning",
-        "Estado": "Sellado, liberado de fábrica"
-      },
-      "imagen": ""
+      }
     },
     {
       "id": "iphone-13-128-usado",
@@ -177,143 +121,52 @@
       "categoria": "iPhone",
       "condicion": "usado",
       "anio": 2021,
-      "equivaleNuevo": "iphone-13-128",
-      "precio": 899000,
-      "precioAnterior": 1020000,
-      "destacado": false,
+      "equivaleNuevo": "iphone-14-128",
+      "precio": 890000,
+      "precioAnterior": 990000,
       "etiqueta": "oferta",
+      "destacado": false,
       "principal": false,
-      "stock": 0,
+      "stock": 1,
       "specs": [
         "128 GB",
-        "Blanco estelar",
+        "Medianoche",
         "Liberado"
       ],
       "estado": {
-        "bateria": 89,
-        "pantalla": "Rayón fino, apenas visible",
-        "carcasa": "Desgaste leve en las esquinas",
-        "uso": "2 años",
-        "reparaciones": "Batería cambiada en servicio oficial",
-        "accesorios": "Sin caja"
+        "bateria": 84,
+        "pantalla": "Un rayón fino en el borde superior, no se nota con la pantalla encendida",
+        "carcasa": "Desgaste visible en las cuatro esquinas",
+        "uso": "3 años",
+        "reparaciones": "Batería reemplazada en servicio oficial en enero de 2025",
+        "accesorios": "Sin caja, con cable genérico"
       },
       "detalle": {
         "Pantalla": "6.1\" Super Retina XDR",
         "Procesador": "A15 Bionic",
         "Cámara": "12 MP principal + 12 MP ultra gran angular",
-        "Batería": "Hasta 19 h de video · salud 89%",
+        "Batería": "Hasta 19 h de video · salud 84%",
         "Almacenamiento": "128 GB",
-        "Color": "Blanco estelar",
+        "Color": "Medianoche",
         "Conector": "Lightning",
         "Estado": "Usado bueno, liberado"
       },
       "imagen": "img/iphone-13-128.jpg"
     },
     {
-      "id": "macbook-air-m3-13",
-      "nombre": "MacBook Air M3 13\"",
-      "categoria": "Mac",
-      "precio": 2899000,
-      "precioAnterior": 3100000,
-      "destacado": true,
-      "principal": true,
-      "stock": 2,
-      "specs": [
-        "Chip M3",
-        "8 GB RAM",
-        "256 GB SSD",
-        "Medianoche"
-      ],
-      "detalle": {
-        "Pantalla": "13.6\" Liquid Retina, 500 nits",
-        "Procesador": "Chip M3 · 8 núcleos CPU / 8 GPU",
-        "Memoria": "8 GB unificada",
-        "Almacenamiento": "256 GB SSD",
-        "Batería": "Hasta 18 h de uso",
-        "Puertos": "2x Thunderbolt / USB-4, MagSafe 3, jack 3.5 mm",
-        "Color": "Medianoche",
-        "Estado": "Sellado"
-      },
-      "imagen": ""
-    },
-    {
-      "id": "macbook-air-m3-13-usado",
-      "nombre": "MacBook Air M3 13\" (usado)",
-      "categoria": "Mac",
-      "condicion": "usado",
-      "anio": 2024,
-      "equivaleNuevo": "macbook-air-m3-13",
-      "precio": 2390000,
-      "precioAnterior": 2590000,
-      "destacado": false,
-      "etiqueta": "oferta",
-      "principal": false,
-      "stock": 1,
-      "specs": [
-        "Chip M3",
-        "8 GB RAM",
-        "256 GB SSD",
-        "Medianoche"
-      ],
-      "estado": {
-        "bateria": 94,
-        "pantalla": "Sin rayones",
-        "carcasa": "Marca leve en la tapa",
-        "uso": "10 meses",
-        "reparaciones": "Ninguna",
-        "accesorios": "Con caja y cargador original"
-      },
-      "detalle": {
-        "Pantalla": "13.6\" Liquid Retina, 500 nits",
-        "Procesador": "Chip M3 · 8 núcleos CPU / 8 GPU",
-        "Memoria": "8 GB unificada",
-        "Almacenamiento": "256 GB SSD",
-        "Batería": "Hasta 18 h de uso · salud 94%",
-        "Puertos": "2x Thunderbolt / USB-4, MagSafe 3, jack 3.5 mm",
-        "Color": "Medianoche",
-        "Estado": "Usado, ciclos de batería bajos"
-      },
-      "imagen": "img/macbook-air-m3-13.jpg"
-    },
-    {
-      "id": "macbook-pro-14-m4",
-      "nombre": "MacBook Pro 14\" M4",
-      "categoria": "Mac",
-      "precio": 4590000,
-      "destacado": false,
-      "principal": false,
-      "stock": 1,
-      "specs": [
-        "Chip M4",
-        "16 GB RAM",
-        "512 GB SSD",
-        "Space Black"
-      ],
-      "detalle": {
-        "Pantalla": "14.2\" Liquid Retina XDR, 120 Hz ProMotion",
-        "Procesador": "Chip M4 · 10 núcleos CPU / 10 GPU",
-        "Memoria": "16 GB unificada",
-        "Almacenamiento": "512 GB SSD",
-        "Batería": "Hasta 22 h de uso",
-        "Puertos": "3x Thunderbolt 4, HDMI, SDXC, MagSafe 3",
-        "Color": "Negro espacial",
-        "Estado": "Sellado"
-      },
-      "imagen": ""
-    },
-    {
       "id": "ipad-air-m2-11",
       "nombre": "iPad Air M2 11\"",
       "categoria": "iPad",
-      "precio": 1590000,
-      "destacado": false,
+      "precio": 1450000,
+      "destacado": true,
+      "etiqueta": "nuevo",
       "principal": true,
-      "stock": 3,
+      "stock": 2,
       "specs": [
         "Chip M2",
         "128 GB",
         "WiFi",
-        "Gris espacial"
+        "Blanco estelar"
       ],
       "detalle": {
         "Pantalla": "11\" Liquid Retina, 60 Hz",
@@ -323,16 +176,14 @@
         "Cámara": "12 MP trasera · 12 MP frontal horizontal",
         "Batería": "Hasta 10 h de navegación",
         "Compatibilidad": "Apple Pencil Pro y Magic Keyboard",
-        "Color": "Gris espacial"
-      },
-      "imagen": ""
+        "Color": "Blanco estelar"
+      }
     },
     {
       "id": "ipad-10-64",
       "nombre": "iPad 10ma gen 64 GB",
       "categoria": "iPad",
-      "precio": 899000,
-      "precioAnterior": 999000,
+      "precio": 780000,
       "destacado": false,
       "principal": false,
       "stock": 0,
@@ -340,7 +191,7 @@
         "64 GB",
         "WiFi",
         "Pantalla 10.9\"",
-        "Plata"
+        "Amarillo"
       ],
       "detalle": {
         "Pantalla": "10.9\" Liquid Retina",
@@ -350,90 +201,84 @@
         "Cámara": "12 MP trasera · 12 MP frontal horizontal",
         "Batería": "Hasta 10 h de navegación",
         "Compatibilidad": "Apple Pencil 1ra gen (con adaptador USB-C)",
-        "Color": "Plata"
-      },
-      "imagen": ""
-    },
-    {
-      "id": "airpods-pro-2",
-      "nombre": "AirPods Pro 2 USB-C",
-      "categoria": "Accesorios",
-      "subcategoria": "Auriculares",
-      "precio": 429000,
-      "precioAnterior": 479000,
-      "destacado": true,
-      "etiqueta": "nuevo",
-      "principal": true,
-      "stock": 8,
-      "specs": [
-        "Cancelación activa",
-        "USB-C",
-        "Sellado"
-      ],
-      "detalle": {
-        "Chip": "H2",
-        "Audio": "Cancelación activa de ruido 2x, modo Transparencia",
-        "Espacial": "Audio espacial personalizado con seguimiento de cabeza",
-        "Batería": "6 h por carga · 30 h con el estuche",
-        "Estuche": "USB-C, compatible MagSafe y Qi",
-        "Resistencia": "IP54 en auriculares y estuche",
-        "Incluye": "4 tamaños de almohadillas",
-        "Estado": "Sellado"
-      },
-      "imagen": ""
+        "Color": "Amarillo"
+      }
     },
     {
       "id": "apple-watch-s10-42",
       "nombre": "Apple Watch Series 10 42 mm",
       "categoria": "Accesorios",
-      "subcategoria": "Relojes",
-      "precio": 749000,
+      "precio": 950000,
       "destacado": false,
       "principal": false,
       "stock": 2,
       "specs": [
         "42 mm",
         "GPS",
-        "Aluminio",
+        "Caja negra",
         "Malla deportiva"
       ],
       "detalle": {
-        "Pantalla": "42 mm LTPO3 OLED, hasta 2000 nits",
-        "Chip": "S10 SiP",
-        "Caja": "Aluminio",
+        "Tipo": "Smartwatch con caja de aluminio negro de 42 mm",
+        "Compatibilidad": "iPhone 11 o superior",
         "Batería": "Hasta 18 h · carga rápida",
-        "Salud": "ECG, oxígeno en sangre, apnea del sueño",
-        "Resistencia": "50 m al agua · IP6X",
         "Conectividad": "GPS + WiFi + Bluetooth 5.3",
-        "Incluye": "Malla deportiva y cable de carga"
-      },
-      "imagen": ""
+        "Resistencia": "50 m al agua · IP6X",
+        "Incluye": "Malla deportiva negra y cable de carga",
+        "Origen": "Original Apple",
+        "Estado": "Sellado"
+      }
     },
     {
-      "id": "magsafe-15w",
-      "nombre": "Cargador MagSafe 15W",
+      "id": "airpods-pro-2da-gen",
+      "nombre": "AirPods Pro 2ª gen",
       "categoria": "Accesorios",
-      "subcategoria": "Cargadores",
-      "precio": 89000,
-      "precioAnterior": 105000,
-      "destacado": false,
-      "principal": false,
-      "stock": 12,
+      "precio": 25000,
+      "precioAnterior": 29000,
+      "destacado": true,
+      "etiqueta": "oferta",
+      "principal": true,
+      "stock": 6,
       "specs": [
-        "15W",
-        "Cable 1 m",
-        "Original"
+        "Cancelación activa",
+        "USB-C",
+        "Sellado"
       ],
       "detalle": {
-        "Potencia": "Hasta 15 W de carga inalámbrica",
-        "Compatibilidad": "iPhone 12 o superior",
-        "Cable": "1 m integrado",
-        "Conector": "USB-C",
-        "Requiere": "Adaptador de 20 W o más (no incluido)",
+        "Tipo": "Auriculares in-ear con cancelación activa de ruido",
+        "Compatibilidad": "iPhone, iPad y Mac",
+        "Batería": "6 h por carga · 30 h con el estuche",
+        "Conectividad": "Bluetooth 5.3 · chip H2",
+        "Resistencia": "IP54 en auriculares y estuche",
+        "Incluye": "Estuche de carga USB-C y 4 tamaños de almohadillas",
         "Origen": "Original Apple",
         "Estado": "Sellado"
       },
-      "imagen": ""
+      "imagen": "img/airpods-pro-2.jpg"
+    },
+    {
+      "id": "magsafe-15w",
+      "nombre": "Battery pack MagSafe 15W",
+      "categoria": "Accesorios",
+      "precio": 20000,
+      "destacado": false,
+      "principal": false,
+      "stock": 8,
+      "specs": [
+        "15W",
+        "MagSafe",
+        "USB-C"
+      ],
+      "detalle": {
+        "Tipo": "Batería externa magnética de 15 W",
+        "Compatibilidad": "iPhone 12 o superior",
+        "Batería": "Carga magnética de hasta 15 W",
+        "Conectividad": "MagSafe · se recarga por USB-C",
+        "Resistencia": "Uso en interiores",
+        "Incluye": "Cable USB-C de 1 m",
+        "Origen": "Original Apple",
+        "Estado": "Sellado"
+      }
     }
   ],
   "combos": [
@@ -441,30 +286,30 @@
       "id": "combo-iphone-16-magsafe",
       "categoria": "iPhone",
       "productos": [
-        "iphone-16-pro-max-256",
+        "iphone-16-pro-256",
         "magsafe-15w"
       ],
-      "descuento": 10,
+      "descuento": 2,
       "etiqueta": "combo"
     },
     {
-      "id": "combo-macbook-air-airpods",
-      "categoria": "Mac",
+      "id": "combo-airpods-magsafe",
+      "categoria": "Accesorios",
       "productos": [
-        "macbook-air-m3-13",
-        "airpods-pro-2"
+        "airpods-pro-2da-gen",
+        "magsafe-15w"
       ],
-      "descuento": 8,
+      "descuento": 11,
       "etiqueta": "combo"
     },
     {
-      "id": "combo-ipad-air-airpods",
-      "categoria": "iPad",
+      "id": "combo-iphone-14-airpods",
+      "categoria": "iPhone",
       "productos": [
-        "ipad-air-m2-11",
-        "airpods-pro-2"
+        "iphone-14-128",
+        "airpods-pro-2da-gen"
       ],
-      "descuento": 8,
+      "descuento": 2,
       "etiqueta": "combo"
     }
   ]
