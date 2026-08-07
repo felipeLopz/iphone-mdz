@@ -1,11 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!-- >>> PERSONALIZAR <<< La letra de abajo es la inicial del negocio.
        Hoy es la "H" de IPHONE HOUSE (el demo).
-       >>> PERSONALIZAR <<< [39] PENDIENTE: favicon-32.png y
-       apple-touch-icon.png siguen mostrando la "A" del comercio anterior.
-       Son binarios: hay que regenerarlos (32x32 y 180x180) a partir de
-       este SVG. Son los que ve la pestana en navegadores sin soporte SVG
-       y el icono de "agregar a pantalla de inicio".
+       >>> PERSONALIZAR <<< [39] Al cambiar la letra hay que REGENERAR los
+       dos PNG que acompanan a este SVG, porque son binarios y no se
+       actualizan solos: favicon-32.png (32x32, esquinas redondeadas y
+       transparentes, igual que este archivo) y apple-touch-icon.png
+       (180x180, variante CUADRADA con el marco jade a sangre de 1.42
+       unidades del viewBox, y SIN transparencia: iOS renderiza el alfa en
+       negro y aplica su propia mascara redondeada).
+       Los dos actuales ya llevan la "H".
 
        Favicon del sitio: variante 8 de los mockups (letra jade sobre
        negro, con marco jade). Fondo negro (color acento del tema claro,
