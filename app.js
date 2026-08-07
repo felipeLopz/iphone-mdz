@@ -5,7 +5,7 @@
    dos son la constante NEGOCIO (marcador [11], en el bloque de abajo) y
    el comentario del contador de pestana (marcador [37], al final).
    =====================================================================
-   IPHONE ALLEN — lógica de la tienda
+   IPHONE HOUSE — lógica de la tienda
    Vanilla JS, sin dependencias, sin build step.
    =====================================================================
 
@@ -85,12 +85,15 @@
   // rinde entera. Ver htmlLogo() más abajo.
   // OJO: cambiarlo acá NO alcanza — también va en el <title>, la meta
   // description y las etiquetas Open Graph de las SEIS páginas HTML.
-  var NEGOCIO = 'IPHONE ALLEN';
+  var NEGOCIO = 'IPHONE HOUSE';
 
   // >>> PERSONALIZAR <<< WhatsApp del negocio.
   // Formato internacional, sin +, sin espacios y sin guiones.
   // (54 = Argentina, 9 = celular, 261 = Mendoza, resto = número)
-  var WHATSAPP = '5492613900039';
+  // OJO: este número es el del DEMO y va sin el 9 de celular, tal como lo
+  // pasó el cliente. Si al probar el link wa.me no abre el chat, hay que
+  // agregarlo: 5492613900039.
+  var WHATSAPP = '542613900039';
 
   // Mensaje del botón "Escribinos" (consulta general). Lo usan también el
   // botón flotante de WhatsApp y los enlaces de redes.
@@ -102,7 +105,7 @@
   // cambiar los dos lugares para que no queden distintos.
   // La localidad aparece además en el eyebrow del hero y en la meta
   // description de las seis páginas.
-  var DIRECCION = 'Río Cuarto 2341, Allen, Río Negro';
+  var DIRECCION = 'Ciudad de Mendoza';
 
   // >>> PERSONALIZAR <<< URL pública del sitio.
   // Se usa para armar el link que se comparte desde el modal de
@@ -110,7 +113,7 @@
   // sitio (el de Vercel o uno propio).
   // OJO: cambiarla acá NO alcanza — las etiquetas og:url y og:image de
   // las SEIS páginas HTML también la llevan escrita.
-  var SITIO = 'https://iphone-allen.vercel.app/';
+  var SITIO = 'https://iphone-mdz.vercel.app/';
 
   var STORAGE_KEY = 'nombre-carrito-v1';
   var ENTREGA_STORAGE_KEY = 'nombre-entrega-v1';
@@ -145,7 +148,7 @@
   // del negocio para cuando se defina dónde publicarlo.
   var CONTACTO = {
     whatsapp: WHATSAPP,
-    instagram: 'iphone.allen',
+    instagram: 'iphonehouse.mdz',
     email: '[CORREO]'
   };
 
@@ -197,7 +200,7 @@
   // ---------------------------------------------------------------------
   // "icono" es el nombre de una clave del objeto ICONOS (más abajo).
   var FORMAS_PAGO = [
-    { titulo: 'Efectivo', detalle: 'En el local o contra entrega.', icono: 'billete' },
+    { titulo: 'Efectivo', detalle: 'En efectivo al momento de la entrega.', icono: 'billete' },
     { titulo: 'Transferencia', detalle: 'Te pasamos los datos por WhatsApp.', icono: 'transferencia' },
     { titulo: 'Tarjeta', detalle: 'Consultanos por las opciones disponibles.', icono: 'tarjeta' }
   ];
@@ -216,13 +219,14 @@
     { p: '¿Qué garantía tienen?', r: 'Consultanos por la garantía disponible según el equipo.' },
     { p: '¿Los equipos vienen liberados?', r: 'Sí, los equipos vienen liberados para usar con cualquier compañía.' },
     { p: '¿Cómo puedo pagar?', r: 'Aceptamos efectivo, transferencia y tarjeta. Escribinos para coordinar la forma de pago.' },
-    // >>> PERSONALIZAR <<< [36] la respuesta de abajo nombra la LOCALIDAD
-    // del negocio anterior ("Allen"). El comercio nuevo es de MENDOZA, asi
-    // que hay que reescribir la zona de envios entera, no solo el nombre.
+    // >>> PERSONALIZAR <<< [36] la zona de envios y el retiro. Ya llevan la
+    // localidad del DEMO (Mendoza), pero el alcance real —hasta donde llega
+    // el envio, si hay costo, si hay local a la calle o punto de encuentro—
+    // hay que confirmarlo con el comercio antes de publicar.
     // Lleva marcador propio porque queda 13 lineas debajo del marcador del
     // array FAQ y es el unico dato geografico enterrado en un texto largo.
-    { p: '¿Hacen envíos? ¿A qué zonas?', r: 'Hacemos envíos a Allen y ciudades vecinas. Consultanos por tu zona.' },
-    { p: '¿Puedo retirar en persona?', r: 'Sí, podés retirar tu pedido en el local. Coordinamos el horario por WhatsApp.' },
+    { p: '¿Hacen envíos? ¿A qué zonas?', r: 'Hacemos envíos en la Ciudad de Mendoza y el Gran Mendoza. Consultanos por tu zona.' },
+    { p: '¿Puedo retirar en persona?', r: 'Sí, coordinamos un punto de encuentro en la Ciudad de Mendoza. Arreglamos el día y el horario por WhatsApp.' },
     { p: '¿Qué pasa si el equipo viene con una falla?', r: 'Escribinos apenas lo notes y lo resolvemos juntos.' }
   ];
 
@@ -1062,7 +1066,7 @@
         '<p class="footer__brand">' + htmlLogo('logo--grande') + '</p>' +
         // DIRECCIÓN PROVISORIA - confirmar con el cliente antes de publicar
         // (sale de la constante DIRECCION, arriba de este archivo)
-        '<p class="footer__nota">' + esc(DIRECCION) + ' · Envíos a ciudades vecinas</p>' +
+        '<p class="footer__nota">' + esc(DIRECCION) + ' · Envíos a todo el Gran Mendoza</p>' +
         '<p class="footer__legal">No somos revendedor oficial de Apple. Apple, iPhone, iPad y Mac ' +
           'son marcas registradas de Apple Inc.</p>' +
       '</div>' +
@@ -1174,7 +1178,7 @@
 
             '<div class="campo">' +
               '<label class="campo__label" for="entregaTelefono">Número de teléfono <span class="req" aria-hidden="true">*</span></label>' +
-              '<input class="input" type="tel" id="entregaTelefono" name="telefono" placeholder="Ej: 2985551234" autocomplete="tel" inputmode="tel">' +
+              '<input class="input" type="tel" id="entregaTelefono" name="telefono" placeholder="Ej: 2615551234" autocomplete="tel" inputmode="tel">' +
               '<p class="campo__error" id="errorTelefono" hidden></p>' +
             '</div>' +
 
@@ -3463,11 +3467,11 @@
 
   /* ------------- CONTADOR DEL CARRITO EN LA PESTAÑA ------------------
      >>> PERSONALIZAR <<< [37] el ejemplo de la linea de abajo lleva el
-     nombre del negocio anterior. Es solo un comentario, pero es la mencion
-     mas lejana al bloque de CONFIGURACION (unas 3350 lineas): quien busca
-     "IPHONE ALLEN" desde arriba y se cansa, no llega hasta aca.
+     nombre del negocio. Es solo un comentario, pero es la mencion mas
+     lejana al bloque de CONFIGURACION (unas 3350 lineas): quien busca el
+     nombre desde arriba y se cansa, no llega hasta aca.
      -------------------------------------------------------------------
-     "(2) iPhones — IPHONE ALLEN…". El title propio de cada página no se
+     "(2) iPhones — IPHONE HOUSE…". El title propio de cada página no se
      reemplaza: TITULO_BASE se guarda arriba de todo, al arrancar, y el
      número se le antepone, así las seis páginas conservan el suyo.
      Se lee del carrito, que vive en localStorage, de modo que el número

@@ -1,12 +1,16 @@
-<!-- >>> PERSONALIZAR <<< [40] el título de abajo lleva el nombre del negocio
-     ANTERIOR. Este README es público (el repo está en GitHub), así que es
-     de los primeros lugares donde alguien lee el nombre viejo. -->
-# IPHONE ALLEN — landing de la tienda
+<!-- >>> PERSONALIZAR <<< [40] el título de abajo lleva el nombre del negocio.
+     Este README es público (el repo está en GitHub), así que es de los
+     primeros lugares donde alguien lo lee. -->
+# IPHONE HOUSE — landing de la tienda
 
-<!-- >>> PERSONALIZAR <<< [41] el párrafo de abajo nombra la LOCALIDAD y la
-     PROVINCIA del negocio anterior ("Allen, Río Negro"). El comercio nuevo
-     es de MENDOZA. -->
-Landing de una tienda online que revende productos Apple en Allen, Río Negro. Está hecha con HTML, CSS y JavaScript simple: no usa React, Vue, ni ningún framework, y no hace falta instalar nada para editarla ni para probarla.
+<!-- >>> PERSONALIZAR <<< [41] el párrafo de abajo nombra la LOCALIDAD del
+     negocio. Hoy es la del demo: Mendoza. -->
+Landing de una tienda online que revende productos Apple en Mendoza, Argentina. Está hecha con HTML, CSS y JavaScript simple: no usa React, Vue, ni ningún framework, y no hace falta instalar nada para editarla ni para probarla.
+
+> **Este proyecto es una copia del sitio de otro comercio** (IPHONE ALLEN, de
+> Allen, Río Negro). Los datos que se ven hoy son los de un **demo de venta**
+> para IPHONE HOUSE, no los de un sitio publicado. El historial de qué se
+> personalizó y qué falta está en `PERSONALIZAR.md` e `INVENTARIO.md`.
 
 Los cuatro archivos que la forman son:
 
@@ -50,7 +54,7 @@ Los textos provisorios ya no se ven como corchetes en pantalla: se reemplazaron 
    Archivo `app.js`, objeto `CONTACTO`, campo `email`. Hoy dice `'[CORREO]'`. **No se muestra en ninguna parte**: el pie de página ya no lleva íconos de redes (WhatsApp e Instagram quedaron sólo en la sección Contacto). El campo queda ahí como dato del negocio, para cuando se decida dónde publicarlo.
 
 4. **La dirección del local.**
-   Hoy figura "Río Cuarto 2341, Allen, Río Negro" en el hero y en el pie. Es **provisoria** y está escrita en **dos lugares distintos**, que hay que cambiar los dos: <!-- >>> PERSONALIZAR <<< [42] la dirección y la provincia de abajo son del negocio anterior; el comercio nuevo es de Mendoza -->
+   Hoy figura "Ciudad de Mendoza" en el hero y en el pie. Es **genérica a propósito** (sin calle ni altura, porque el demo no declara local a la calle) y está escrita en **dos lugares distintos**, que hay que cambiar los dos: <!-- >>> PERSONALIZAR <<< [42] la dirección de abajo es la del demo; si el comercio tiene local a la calle hay que poner calle y altura en los dos lugares -->
    - `app.js`, constante `DIRECCION` (marcador de personalización `[13]`). El comentario `DIRECCIÓN PROVISORIA` está en `htmlFooter()`, donde se usa la constante.
    - `index.html`, párrafo `.hero__direccion` (marcador de personalización `[3]`).
 
@@ -77,7 +81,7 @@ Los textos provisorios ya no se ven como corchetes en pantalla: se reemplazaron 
 
    Se agregó a propósito para que Google **no** indexe el sitio mientras todavía tiene los textos provisorios de arriba sin completar — así nadie lo encuentra a medio terminar. Tiene un comentario al lado que lo explica. **Antes de publicar el sitio de verdad, hay que borrar esa línea en las seis páginas.** Si se publica con esa línea puesta, el sitio va a funcionar perfecto, pero no va a aparecer en los resultados de Google.
 
-   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphone-allen.vercel.app/`: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`. <!-- >>> PERSONALIZAR <<< [43] el dominio de arriba es el del negocio anterior y su slug contiene "allen"; ver también la nota del final sobre renombrar el repositorio -->
+   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphone-mdz.vercel.app/`: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`. <!-- >>> PERSONALIZAR <<< [43] el dominio de arriba se dedujo del nombre del repo (iphone-mdz); hay que confirmarlo en Vercel, ver la nota del final -->
 
 ---
 
@@ -119,9 +123,8 @@ Se edita ahí y cambia en los dos lugares a la vez. Vale igual para nuevos y usa
 ### El contador de la pestaña
 
 <!-- >>> PERSONALIZAR <<< [44] el ejemplo del párrafo de abajo lleva el nombre
-     del negocio anterior ("IPHONE ALLEN"). Es documentación, no código, pero
-     es público. -->
-Cuando el carrito tiene productos, el título de la pestaña del navegador arranca con la cantidad: `(3) iPhones — IPHONE ALLEN…`. Con el carrito vacío se ve el título normal. El número son **unidades** (respeta las cantidades, no cuenta líneas), se actualiza al agregar, quitar y cambiar cantidades, y como el carrito vive en `localStorage` sigue estando al pasar de una página a otra. Cada página conserva su propio título: el número se le antepone.
+     del negocio. Es documentación, no código, pero es público. -->
+Cuando el carrito tiene productos, el título de la pestaña del navegador arranca con la cantidad: `(3) iPhones — IPHONE HOUSE…`. Con el carrito vacío se ve el título normal. El número son **unidades** (respeta las cantidades, no cuenta líneas), se actualiza al agregar, quitar y cambiar cantidades, y como el carrito vive en `localStorage` sigue estando al pasar de una página a otra. Cada página conserva su propio título: el número se le antepone.
 
 ---
 
@@ -438,10 +441,11 @@ que confirmar en Vercel que el proyecto quedó apuntando al repo renombrado y
 cuál es el dominio definitivo — el que Vercel deriva del nombre del repo, o uno
 propio si el cliente lo contrata.
 
-Hasta que ese dominio esté confirmado, la constante `SITIO` de `app.js` y las
-etiquetas `og:url` / `og:image` de las seis páginas siguen con el dominio del
-comercio anterior (`iphone-allen.vercel.app`), que está puesto a propósito como
-ejemplo del formato.
+La constante `SITIO` de `app.js` y las etiquetas `og:url` / `og:image` de las
+seis páginas ya apuntan a `https://iphone-mdz.vercel.app/`, que es el subdominio
+que Vercel deriva del nombre del repo. **Falta confirmarlo:** si el proyecto en
+Vercel tiene otro nombre, el subdominio real va a ser otro y hay que corregir la
+constante y las doce etiquetas.
 
 Orden sugerido: confirmar el proyecto y el dominio en Vercel → recién ahí
 completar `SITIO` y las doce etiquetas Open Graph.

@@ -1,15 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- >>> PERSONALIZAR <<< La letra "A" de abajo es la inicial del
-       >>> PERSONALIZAR <<< [39] la linea que sigue nombra ademas la
-       LOCALIDAD anterior ("Allen"). El comercio nuevo es de MENDOZA: al
-       cambiar la letra hay que limpiar tambien esa mencion del texto.
-       negocio ANTERIOR ("Allen"). Cambiarla por la inicial del cliente
-       nuevo, y regenerar despues favicon-32.png y apple-touch-icon.png
-       (180x180) a partir de este SVG, porque son los que ve la pestana
+  <!-- >>> PERSONALIZAR <<< La letra de abajo es la inicial del negocio.
+       Hoy es la "H" de IPHONE HOUSE (el demo).
+       >>> PERSONALIZAR <<< [39] PENDIENTE: favicon-32.png y
+       apple-touch-icon.png siguen mostrando la "A" del comercio anterior.
+       Son binarios: hay que regenerarlos (32x32 y 180x180) a partir de
+       este SVG. Son los que ve la pestana en navegadores sin soporte SVG
        y el icono de "agregar a pantalla de inicio".
 
-       Favicon del sitio: variante 8 de los mockups (A jade sobre negro,
-       con marco jade). Fondo negro (color acento del tema claro,
+       Favicon del sitio: variante 8 de los mockups (letra jade sobre
+       negro, con marco jade). Fondo negro (color acento del tema claro,
        #111418), marco y letra en jade (#5DCAA5, el acento del tema
        oscuro): así el ícono no cambia según el tema del sistema, es una
        marca fija. El marco es de 1.5px con 1px de margen para que a
@@ -17,5 +16,5 @@
        funda con el borde del círculo de la pestaña del navegador. -->
   <rect x="1" y="1" width="30" height="30" rx="7" fill="#111418" stroke="#5DCAA5" stroke-width="1.5"/>
   <text x="16" y="22.5" font-family="Arial, Helvetica, sans-serif" font-weight="700"
-        font-size="19" fill="#5DCAA5" text-anchor="middle">A</text>
+        font-size="19" fill="#5DCAA5" text-anchor="middle">H</text>
 </svg>
