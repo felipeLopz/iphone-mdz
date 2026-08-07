@@ -81,7 +81,7 @@ Los textos provisorios ya no se ven como corchetes en pantalla: se reemplazaron 
 
    Se agregó a propósito para que Google **no** indexe el sitio mientras todavía tiene los textos provisorios de arriba sin completar — así nadie lo encuentra a medio terminar. Tiene un comentario al lado que lo explica. **Antes de publicar el sitio de verdad, hay que borrar esa línea en las seis páginas.** Si se publica con esa línea puesta, el sitio va a funcionar perfecto, pero no va a aparecer en los resultados de Google.
 
-   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphone-mdz.vercel.app/`: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`. <!-- >>> PERSONALIZAR <<< [43] el dominio de arriba se dedujo del nombre del repo (iphone-mdz); hay que confirmarlo en Vercel, ver la nota del final -->
+   En las seis páginas están también las etiquetas Open Graph (la vista previa al compartir el link). Apuntan a `https://iphonehouse.vercel.app/`, que es el dominio real del deploy: si el sitio pasa a un dominio propio, hay que actualizar `og:url` y `og:image` en los seis archivos y la constante `SITIO` de `app.js`. <!-- >>> PERSONALIZAR <<< [43] el dominio de arriba es el del deploy actual; si el cliente contrata un dominio propio hay que cambiarlo acá, en SITIO y en las doce etiquetas Open Graph -->
 
 ---
 
@@ -442,10 +442,11 @@ cuál es el dominio definitivo — el que Vercel deriva del nombre del repo, o u
 propio si el cliente lo contrata.
 
 La constante `SITIO` de `app.js` y las etiquetas `og:url` / `og:image` de las
-seis páginas ya apuntan a `https://iphone-mdz.vercel.app/`, que es el subdominio
-que Vercel deriva del nombre del repo. **Falta confirmarlo:** si el proyecto en
-Vercel tiene otro nombre, el subdominio real va a ser otro y hay que corregir la
-constante y las doce etiquetas.
+seis páginas apuntan a **`https://iphonehouse.vercel.app/`**, que es el dominio
+real del deploy. Ojo con una asimetría que confunde: el **repositorio** se llama
+`iphone-mdz` y el **proyecto de Vercel** se llama `iphonehouse`, así que el
+subdominio no se deriva del nombre del repo. Si algún día el cliente contrata un
+dominio propio, hay que cambiar la constante y las doce etiquetas.
 
 Orden sugerido: confirmar el proyecto y el dominio en Vercel → recién ahí
 completar `SITIO` y las doce etiquetas Open Graph.

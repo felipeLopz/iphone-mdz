@@ -113,7 +113,7 @@
   // sitio (el de Vercel o uno propio).
   // OJO: cambiarla acá NO alcanza — las etiquetas og:url y og:image de
   // las SEIS páginas HTML también la llevan escrita.
-  var SITIO = 'https://iphone-mdz.vercel.app/';
+  var SITIO = 'https://iphonehouse.vercel.app/';
 
   var STORAGE_KEY = 'nombre-carrito-v1';
   var ENTREGA_STORAGE_KEY = 'nombre-entrega-v1';
