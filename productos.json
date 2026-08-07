@@ -60,7 +60,6 @@
       "categoria": "iPhone",
       "condicion": "usado",
       "anio": 2023,
-      "equivaleNuevo": "iphone-15-pro-256",
       "precio": 1750000,
       "destacado": false,
       "principal": false,
@@ -116,20 +115,19 @@
       }
     },
     {
-      "id": "iphone-13-128-usado",
-      "nombre": "iPhone 13 128 GB (usado)",
+      "id": "iphone-13-256-usado",
+      "nombre": "iPhone 13 256 GB (usado)",
       "categoria": "iPhone",
       "condicion": "usado",
       "anio": 2021,
-      "equivaleNuevo": "iphone-14-128",
-      "precio": 890000,
-      "precioAnterior": 990000,
+      "precio": 980000,
+      "precioAnterior": 1090000,
       "etiqueta": "oferta",
       "destacado": false,
       "principal": false,
       "stock": 1,
       "specs": [
-        "128 GB",
+        "256 GB",
         "Medianoche",
         "Liberado"
       ],
@@ -146,7 +144,7 @@
         "Procesador": "A15 Bionic",
         "Cámara": "12 MP principal + 12 MP ultra gran angular",
         "Batería": "Hasta 19 h de video · salud 84%",
-        "Almacenamiento": "128 GB",
+        "Almacenamiento": "256 GB",
         "Color": "Medianoche",
         "Conector": "Lightning",
         "Estado": "Usado bueno, liberado"
@@ -257,28 +255,29 @@
       "imagen": "img/airpods-pro-2.jpg"
     },
     {
-      "id": "magsafe-15w",
-      "nombre": "Battery pack MagSafe 15W",
+      "id": "cargador-magsafe-15w",
+      "nombre": "Cargador MagSafe 15W",
       "categoria": "Accesorios",
       "precio": 20000,
       "destacado": false,
       "principal": false,
       "stock": 8,
       "specs": [
-        "15W",
+        "15W inalámbrico",
         "MagSafe",
-        "USB-C"
+        "Cable USB-C 1 m"
       ],
       "detalle": {
-        "Tipo": "Batería externa magnética de 15 W",
-        "Compatibilidad": "iPhone 12 o superior",
-        "Batería": "Carga magnética de hasta 15 W",
-        "Conectividad": "MagSafe · se recarga por USB-C",
+        "Tipo": "Cargador inalámbrico magnético de disco, hasta 15 W",
+        "Compatibilidad": "iPhone 12 o superior · AirPods con estuche MagSafe",
+        "Batería": "No tiene batería propia: se enchufa a la corriente",
+        "Conectividad": "Imán MagSafe · conector USB-C",
         "Resistencia": "Uso en interiores",
-        "Incluye": "Cable USB-C de 1 m",
+        "Incluye": "Cable de 1 m integrado (no incluye adaptador de corriente)",
         "Origen": "Original Apple",
         "Estado": "Sellado"
-      }
+      },
+      "imagen": "img/magsafe-15w.jpg"
     }
   ],
   "combos": [
@@ -287,7 +286,7 @@
       "categoria": "iPhone",
       "productos": [
         "iphone-16-pro-256",
-        "magsafe-15w"
+        "cargador-magsafe-15w"
       ],
       "descuento": 2,
       "etiqueta": "combo"
@@ -297,16 +296,16 @@
       "categoria": "Accesorios",
       "productos": [
         "airpods-pro-2da-gen",
-        "magsafe-15w"
+        "cargador-magsafe-15w"
       ],
       "descuento": 11,
       "etiqueta": "combo"
     },
     {
-      "id": "combo-iphone-14-airpods",
-      "categoria": "iPhone",
+      "id": "combo-ipad-air-airpods",
+      "categoria": "iPad",
       "productos": [
-        "iphone-14-128",
+        "ipad-air-m2-11",
         "airpods-pro-2da-gen"
       ],
       "descuento": 2,
